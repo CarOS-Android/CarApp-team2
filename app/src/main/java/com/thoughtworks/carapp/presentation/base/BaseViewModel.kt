@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 
 interface Event
 
-abstract class BaseViewModel: ViewModel() {
+abstract class BaseViewModel : ViewModel() {
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
 
     init {

@@ -39,8 +39,11 @@ class SampleViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = SampleState.Loading
+        initialValue = SampleState.Loading,
     )
+
+    private val _thumpUpState = MutableStateFlow<ThumpUpState>(ThumpUpState.Unliked)
+    val thumpUpState: StateFlow<ThumpUpState> = _thumpUpState.asStateFlow()
 
     fun thumpUp() {
         viewModelScope.launch {
@@ -50,10 +53,10 @@ class SampleViewModel @Inject constructor(
         }
     }
 
-    //--------------------------------111111111111111-----------------------------------
+    // --------------------------------111111111111111-----------------------------------
 
-    private val _thumpUpState = MutableStateFlow<ThumpUpState>(ThumpUpState.Unliked)
-    val thumpUpState: StateFlow<ThumpUpState> = _thumpUpState.asStateFlow()
+    private val _thumpUpState2 = MutableStateFlow<ThumpUpState>(ThumpUpState.Unliked)
+    val thumpUpState2: StateFlow<ThumpUpState> = _thumpUpState2.asStateFlow()
 
     override fun handleEvents(event: Event) {
         when (event) {

@@ -17,14 +17,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun SampleComponent(
-    viewModel: SampleViewModel = viewModel()
+    viewModel: SampleViewModel = viewModel(),
 ) {
     val sampleState by viewModel.sampleState.collectAsState()
     val thumpUpState by viewModel.thumpUpState.collectAsState()
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         when (sampleState) {
             is SampleState.Loading -> {
