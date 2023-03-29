@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,23 +19,24 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun SampleComponent(
     viewModel: SampleViewModel = viewModel()
 ) {
-
-    val sampleState = viewModel.sampleState.collectAsState().value
+    val sampleState by viewModel.sampleState.collectAsState()
+    val thumpUpState by viewModel.thumpUpState.collectAsState()
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = { viewModel.sendAction(SampleAction.GetData) }) {
-            Text(text = "Get data")
-        }
-
         when (sampleState) {
             is SampleState.Loading -> {
                 CircularProgressIndicator()
             }
             is SampleState.Success -> {
-                Text(text = sampleState.data)
+                Column {
+                    Text(text = (sampleState as SampleState.Success).data)
+                    Button(onClick = { viewModel.sendEvent(SampleEvent.ThumbsUpEvent) }) {
+                        Text(text = if (thumpUpState is ThumpUpState.Unliked) "点赞" else "取消点赞")
+                    }
+                }
             }
         }
     }
