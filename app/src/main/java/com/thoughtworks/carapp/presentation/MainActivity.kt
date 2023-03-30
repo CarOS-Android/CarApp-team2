@@ -1,6 +1,6 @@
 @file:Suppress("PackageNaming")
 
-package com.thoughtworks.carapp
+package com.thoughtworks.carapp.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
