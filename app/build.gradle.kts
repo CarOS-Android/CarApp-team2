@@ -30,7 +30,8 @@ androidApplication {
 }
 
 dependencies {
-    
+    implementation(files("${rootProject.projectDir}/libs/car-lib-debug.aar"))
+
     implementation(libs.bundles.kotlin)
     implementation(libs.bundles.android)
     implementation(libs.bundles.compose)
