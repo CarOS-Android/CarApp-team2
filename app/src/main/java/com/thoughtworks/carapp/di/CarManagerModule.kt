@@ -1,4 +1,4 @@
-package com.thoughtworks.carapp.presentation.di
+package com.thoughtworks.carapp.di
 
 import android.car.Car
 import android.car.hardware.property.CarPropertyManager

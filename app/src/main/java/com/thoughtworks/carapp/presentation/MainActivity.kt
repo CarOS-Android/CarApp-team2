@@ -4,6 +4,7 @@ package com.thoughtworks.carapp.presentation
 
 import android.car.VehicleAreaType
 import android.car.VehiclePropertyIds
+import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import android.os.Bundle
 import android.util.Log
@@ -39,6 +40,18 @@ class MainActivity : AppCompatActivity() {
                 VehiclePropertyIds.CURRENT_GEAR,
                 VehicleAreaType.VEHICLE_AREA_TYPE_GLOBAL
             ).value
+
+            val currentGearCallback = object : CarPropertyManager.CarPropertyEventCallback{
+                override fun onChangeEvent(p0: CarPropertyValue<*>?) {
+                    Log.i("currentGearCallback", "Current GEAR: ${p0?.value}")
+                }
+
+                override fun onErrorEvent(p0: Int, p1: Int) {
+                    Log.e("currentGearCallback", "Get Current GEAR ERROR!")
+                }
+
+            }
+            carPropertyManager.registerCallback(currentGearCallback, VehiclePropertyIds.CURRENT_GEAR, 10f)
 
             // wrong param type
             // val currentGearString = carPropertyManager.getProperty<String>(
