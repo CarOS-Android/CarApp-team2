@@ -30,7 +30,7 @@ androidApplication {
 }
 
 dependencies {
-    
+
     implementation(libs.bundles.kotlin)
     implementation(libs.bundles.android)
     implementation(libs.bundles.compose)
