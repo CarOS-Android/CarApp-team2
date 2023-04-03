@@ -1,5 +1,7 @@
 @file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
 
+import java.net.URI
+
 fun readConfig(name: String): String {
     return settings.extensions.extraProperties.properties[name] as String?
         ?: System.getenv(name) ?: ""
@@ -67,6 +69,10 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://jitpack.io")
         mavenLocal()
+        maven {
+            url = URI.create("http://10.205.215.4:8081/repository/maven-releases/")
+            isAllowInsecureProtocol = true
+        }
 
         if (readConfig("MAVEN_REPO").isNotEmpty()) {
             maven {
