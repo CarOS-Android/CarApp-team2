@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity() {
                     | VehiclePropertyGroup:SYSTEM
                     | VehiclePropertyType:INT32
                     | VehicleArea:GLOBAL),
+
+                Check which permission is need for this property: CarService -> PropertyPermissionMapping.java
              */
 
             val currentGear = carPropertyManager.getProperty<Int>(
@@ -53,13 +55,17 @@ class MainActivity : AppCompatActivity() {
             }
             carPropertyManager.registerCallback(currentGearCallback, VehiclePropertyIds.CURRENT_GEAR, 10f)
 
-            // wrong param type
+            // wrong param type will lead to crash
             // val currentGearString = carPropertyManager.getProperty<String>(
             //   VehiclePropertyIds.CURRENT_GEAR,
             //   VehicleAreaType.VEHICLE_AREA_TYPE_GLOBAL
             // ).value
 
             Log.i("carPropertyManager", "Current GEAR: $currentGear")
+
+            // without System sign will lead to crash
+            val temperatureConfig = carPropertyManager.getCarPropertyConfig(VehiclePropertyIds.HVAC_TEMPERATURE_SET)
+            Log.i("carPropertyManager", "HVAC temperature config: ${temperatureConfig.configArray}")
         }
     }
 }
