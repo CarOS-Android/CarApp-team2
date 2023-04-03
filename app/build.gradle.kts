@@ -30,7 +30,10 @@ androidApplication {
 }
 
 dependencies {
-    
+    // For now, the Car-lib build from ourselves CarService still unstable, so use official Car-lib instead
+//    implementation(files("${rootProject.projectDir}/libs/car-lib-debug.aar"))
+    implementation(files("${rootProject.projectDir}/libs/android.car.jar"))
+
     implementation(libs.bundles.kotlin)
     implementation(libs.bundles.android)
     implementation(libs.bundles.compose)
