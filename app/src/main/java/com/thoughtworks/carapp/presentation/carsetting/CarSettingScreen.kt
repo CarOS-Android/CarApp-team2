@@ -1,4 +1,4 @@
-package com.thoughtworks.carapp.presentation.carSetting
+package com.thoughtworks.carapp.presentation.carsetting
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
