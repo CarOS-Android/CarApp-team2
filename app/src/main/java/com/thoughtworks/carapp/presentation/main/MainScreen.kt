@@ -36,8 +36,8 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
         Image(
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(start = 501.dp, top = 21.dp)
-                .size(133.dp, 133.dp)
+                .padding(start = 752.dp, top = 32.dp)
+                .size(200.dp, 200.dp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null

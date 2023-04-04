@@ -2,6 +2,10 @@
 
 ## How to deploy our app as a system application
 
+### change emulator density
+1. start emulator
+2. run `adb shell wm density 160` and `adb reboot`
+
 ### init setup
 1. run `emulator -avd Automotive_API_33 -writable-system -no-snapshot-load` command to launch the emulator with writable file system.
 > NOTE: put the Android SDK emulator command to the environment variable
