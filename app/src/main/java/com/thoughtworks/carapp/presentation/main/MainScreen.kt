@@ -13,10 +13,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
-    val autoHoldState by viewModel.autoHoldUiState.collectAsState()
+    val isAutoHoldOn by viewModel.isAutoHoldOn.collectAsState()
 
     Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
-        AutoHoldButton(modifier = Modifier.padding(bottom = 55.dp), autoHoldState) {
+        AutoHoldButton(modifier = Modifier.padding(bottom = 55.dp), isAutoHoldOn) {
             viewModel.sendEvent(MainScreenEvent.SwitchAutoHoldMode)
         }
     }
