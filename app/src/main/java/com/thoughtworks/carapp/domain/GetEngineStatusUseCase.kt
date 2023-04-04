@@ -12,7 +12,7 @@ class GetEngineStatusUseCase @Inject constructor(
     private val vehiclePropertyManager: VehiclePropertyManager
 ) {
     operator fun invoke(): Flow<Boolean> {
-        return vehiclePropertyManager.getPropertyFlow(
+        return vehiclePropertyManager.getProperty(
             VehiclePropertyIds.IGNITION_STATE,
             CarPropertyManager.SENSOR_RATE_ONCHANGE
         ).map { it?.value as Int }

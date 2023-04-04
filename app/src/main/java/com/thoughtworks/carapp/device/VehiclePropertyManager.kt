@@ -15,7 +15,7 @@ class VehiclePropertyManager @Inject constructor(
     private val carPropertyManager: CarPropertyManager
 ) {
 
-    fun getPropertyFlow(
+    fun getProperty(
         propId: Int,
         rate: Float = PropertyDeliverRate
     ): Flow<CarPropertyValue<*>?> = callbackFlow {

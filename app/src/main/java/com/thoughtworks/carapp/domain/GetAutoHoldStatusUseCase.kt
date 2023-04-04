@@ -11,7 +11,7 @@ class GetAutoHoldStatusUseCase @Inject constructor(
 ) {
 
     operator fun invoke(): Flow<Boolean> {
-        return vehiclePropertyManager.getPropertyFlow(VehiclePropertyIds.PARKING_BRAKE_AUTO_APPLY)
+        return vehiclePropertyManager.getProperty(VehiclePropertyIds.PARKING_BRAKE_AUTO_APPLY)
             .map { it?.value as Boolean }
     }
 }
