@@ -47,9 +47,9 @@ fun ParkingBreakButton(
             Image(
                 painter = painterResource(
                     id = if (isOpened) {
-                        R.drawable.ic_indicator_opened
+                        R.drawable.ic_indicator_on
                     } else {
-                        R.drawable.ic_indicator_closed
+                        R.drawable.ic_indicator_off
                     }
                 ),
                 contentDescription = ""
