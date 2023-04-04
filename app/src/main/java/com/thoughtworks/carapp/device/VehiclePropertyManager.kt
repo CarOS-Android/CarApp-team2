@@ -16,7 +16,8 @@ class VehiclePropertyManager @Inject constructor(
 ) {
 
     fun getPropertyFlow(
-        propId: Int
+        propId: Int,
+        rate: Float = PropertyDeliverRate
     ): Flow<CarPropertyValue<*>?> = callbackFlow {
         val propertyCallback = object : CarPropertyManager.CarPropertyEventCallback {
             override fun onChangeEvent(value: CarPropertyValue<*>?) {
@@ -35,7 +36,7 @@ class VehiclePropertyManager @Inject constructor(
         carPropertyManager.registerCallback(
             propertyCallback,
             propId,
-            PropertyDeliverRate
+            rate
         )
 
         awaitClose { carPropertyManager.unregisterCallback(propertyCallback) }

@@ -1,5 +1,7 @@
 @file:Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
 
+import java.net.URI
+
 fun readConfig(name: String): String {
     return settings.extensions.extraProperties.properties[name] as String?
         ?: System.getenv(name) ?: ""
@@ -7,7 +9,7 @@ fun readConfig(name: String): String {
 
 pluginManagement {
     fun createBuildLogicPath(): String {
-        //If it is build by Jenkins, use the project directory to keep BuildLogic
+        // If it is build by Jenkins, use the project directory to keep BuildLogic
         return if (System.getenv("BUILD_ID").isNullOrEmpty()) {
             "../BuildLogic"
         } else {
@@ -28,7 +30,7 @@ pluginManagement {
 
         if (!file(buildLogicPath).exists()) {
             println("Init build logic...")
-            //clone build logic to BuildLogic dir
+            // clone build logic to BuildLogic dir
             val result = execCmd(
                 ".",
                 "git clone -b main https://github.com/TW-Smart-CoE/BuildLogic.git $buildLogicPath"
@@ -67,6 +69,10 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://jitpack.io")
         mavenLocal()
+        maven {
+            url = URI.create("http://10.205.215.4:8081/repository/maven-releases/")
+            isAllowInsecureProtocol = true
+        }
 
         if (readConfig("MAVEN_REPO").isNotEmpty()) {
             maven {
