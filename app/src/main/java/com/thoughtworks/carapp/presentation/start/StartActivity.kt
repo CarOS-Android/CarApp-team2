@@ -31,7 +31,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.thoughtworks.carapp.R
-import com.thoughtworks.carapp.presentation.carsetting.SettingScreen
+import com.thoughtworks.carapp.presentation.carsetting.CarSettingScreen
 import com.thoughtworks.carapp.presentation.main.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -64,7 +64,7 @@ class StartActivity : AppCompatActivity() {
                 ) {
                     when (currentDestination) {
                         StartDestination.Main -> MainScreen()
-                        StartDestination.CarSetting -> SettingScreen()
+                        StartDestination.CarSetting -> CarSettingScreen()
                         else -> PlaceHolderScreen(currentDestination.name)
                     }
                 }
