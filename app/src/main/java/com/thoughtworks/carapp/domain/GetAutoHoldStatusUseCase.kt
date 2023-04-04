@@ -6,7 +6,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetAutoHoldStatusUserCase @Inject constructor(
+class GetAutoHoldStatusUseCase @Inject constructor(
     private val vehiclePropertyManager: VehiclePropertyManager
 ) {
 

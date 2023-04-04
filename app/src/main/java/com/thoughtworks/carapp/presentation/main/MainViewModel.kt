@@ -2,7 +2,7 @@ package com.thoughtworks.carapp.presentation.main
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.thoughtworks.carapp.domain.GetAutoHoldStatusUserCase
+import com.thoughtworks.carapp.domain.GetAutoHoldStatusUseCase
 import com.thoughtworks.carapp.domain.GetEngineStatusUseCase
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
@@ -20,11 +20,11 @@ sealed interface MainScreenEvent : Event {
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    getAutoHoldStatusUserCase: GetAutoHoldStatusUserCase,
+    getAutoHoldStatusUseCase: GetAutoHoldStatusUseCase,
     getEngineStatusUseCase: GetEngineStatusUseCase
 ) : BaseViewModel() {
 
-    val isAutoHoldOn: StateFlow<Boolean> = getAutoHoldStatusUserCase().stateIn(
+    val isAutoHoldOn: StateFlow<Boolean> = getAutoHoldStatusUseCase().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = false
