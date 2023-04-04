@@ -22,6 +22,7 @@ private const val PropertyDeliverRate = 10F
 
 sealed interface MainScreenEvent : Event {
     object SwitchAutoHoldMode : MainScreenEvent
+    object SwitchParkingBreakMode : MainScreenEvent
 }
 
 @HiltViewModel
@@ -37,10 +38,21 @@ class MainViewModel @Inject constructor(
         initialValue = false
     )
 
+    val parkingBreakUiState: StateFlow<Boolean> = getPropertyFlow(
+        VehiclePropertyIds.PARKING_BRAKE_ON
+    ).map { it?.value as Boolean }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = true
+    )
+
     override fun handleEvents(event: Event) {
         when (event) {
             MainScreenEvent.SwitchAutoHoldMode -> {
                 Log.i(MainViewModel::class.simpleName, "Change Auto mode")
+            }
+            MainScreenEvent.SwitchParkingBreakMode -> {
+                Log.i(MainViewModel::class.simpleName, "Change Parking Break mode")
             }
         }
     }

@@ -14,6 +14,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val autoHoldState by viewModel.autoHoldUiState.collectAsState()
+    val parkingBreakState by viewModel.parkingBreakUiState.collectAsState()
+
+    Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
+        ParkingBreakButton(modifier = Modifier.padding(bottom = 200.dp), parkingBreakState) {
+            viewModel.sendEvent(MainScreenEvent.SwitchParkingBreakMode)
+        }
+    }
 
     Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
         AutoHoldButton(modifier = Modifier.padding(bottom = 55.dp), autoHoldState) {
