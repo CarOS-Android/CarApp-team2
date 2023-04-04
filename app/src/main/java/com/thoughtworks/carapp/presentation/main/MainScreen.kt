@@ -16,6 +16,8 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val autoHoldState by viewModel.autoHoldUiState.collectAsState()
 
     Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
-        AutoHoldButton(modifier = Modifier.padding(bottom = 55.dp), autoHoldState)
+        AutoHoldButton(modifier = Modifier.padding(bottom = 55.dp), autoHoldState) {
+            viewModel.sendEvent(MainScreenEvent.SwitchAutoHoldMode)
+        }
     }
 }
