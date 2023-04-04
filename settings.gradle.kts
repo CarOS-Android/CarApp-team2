@@ -9,7 +9,7 @@ fun readConfig(name: String): String {
 
 pluginManagement {
     fun createBuildLogicPath(): String {
-        //If it is build by Jenkins, use the project directory to keep BuildLogic
+        // If it is build by Jenkins, use the project directory to keep BuildLogic
         return if (System.getenv("BUILD_ID").isNullOrEmpty()) {
             "../BuildLogic"
         } else {
@@ -30,7 +30,7 @@ pluginManagement {
 
         if (!file(buildLogicPath).exists()) {
             println("Init build logic...")
-            //clone build logic to BuildLogic dir
+            // clone build logic to BuildLogic dir
             val result = execCmd(
                 ".",
                 "git clone -b main https://github.com/TW-Smart-CoE/BuildLogic.git $buildLogicPath"

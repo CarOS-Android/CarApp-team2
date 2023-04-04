@@ -20,17 +20,17 @@ import com.thoughtworks.carapp.R
 
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
-    val autoHoldState by viewModel.autoHoldUiState.collectAsState()
-    val engineState by viewModel.engineState.collectAsState()
+    val isAutoHoldOn by viewModel.isAutoHoldOn.collectAsState()
+    val isEngineOn by viewModel.isEngineOn.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         AutoHoldButton(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 55.dp),
-            autoHoldState
+            isAutoHoldOn
         ) {
-            viewModel.sendEvent(MainScreenEvent.SwitchAutoHoldMode)
+            viewModel.sendEvent(MainScreenEvent.SwitchAutoHoldModeEvent)
         }
 
         Image(
@@ -42,13 +42,13 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
                 ) {
-                    if (engineState) {
+                    if (isEngineOn) {
                         viewModel.sendEvent(MainScreenEvent.StopEngineEvent)
                     } else {
                         viewModel.sendEvent(MainScreenEvent.StartEngineEvent)
                     }
                 },
-            painter = if (engineState) {
+            painter = if (isEngineOn) {
                 painterResource(id = R.drawable.ic_engine_started)
             } else {
                 painterResource(id = R.drawable.ic_engine_normal)
