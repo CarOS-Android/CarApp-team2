@@ -22,6 +22,7 @@ import com.thoughtworks.carapp.R
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val isAutoHoldOn by viewModel.isAutoHoldOn.collectAsState()
     val isEngineOn by viewModel.isEngineOn.collectAsState()
+    val isParkingBreakOn by viewModel.isParkingBreakOn.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         AutoHoldButton(
@@ -31,6 +32,15 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             isAutoHoldOn
         ) {
             viewModel.sendEvent(MainScreenEvent.SwitchAutoHoldModeEvent)
+        }
+
+        ParkingBreakButton(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 200.dp),
+            isParkingBreakOn
+        ) {
+            viewModel.sendEvent(MainScreenEvent.SwitchParkingBreakEvent)
         }
 
         Image(
