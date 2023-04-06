@@ -4,9 +4,9 @@ import android.car.VehicleIgnitionState
 import android.car.VehiclePropertyIds
 import android.car.hardware.property.CarPropertyManager
 import com.thoughtworks.carapp.device.VehiclePropertyManager
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class GetEngineStatusUseCase @Inject constructor(
     private val vehiclePropertyManager: VehiclePropertyManager

@@ -1,6 +1,6 @@
 package com.thoughtworks.carapp.presentation.main
 
-import android.text.format.DateFormat.*
+import android.text.format.DateFormat
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.thoughtworks.carapp.domain.GetAutoHoldStatusUseCase
@@ -12,11 +12,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.flow.MutableStateFlow
-import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 sealed interface MainScreenEvent : Event {
     object SwitchAutoHoldModeEvent : MainScreenEvent
@@ -31,7 +31,6 @@ class MainViewModel @Inject constructor(
     getEngineStatusUseCase: GetEngineStatusUseCase,
     getParkingBreakStatusUseCase: GetParkingBreakStatusUseCase
 ) : BaseViewModel() {
-
     val isAutoHoldOn: StateFlow<Boolean> = getAutoHoldStatusUseCase().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -58,11 +57,11 @@ class MainViewModel @Inject constructor(
 
     @OptIn(ObsoleteCoroutinesApi::class)
     private fun startClockTick() {
-        val ticker = ticker(1000, 0)
+        val ticker = ticker(TICK_INTERVAL, 0)
         viewModelScope.launch {
             for (event in ticker) {
                 val currentTime = System.currentTimeMillis()
-                clockText.value = format("HH:mm", currentTime).toString()
+                clockText.value = DateFormat.format("HH:mm", currentTime).toString()
             }
         }
     }
@@ -79,5 +78,9 @@ class MainViewModel @Inject constructor(
                 Log.i(MainViewModel::class.simpleName, "Change Parking Break mode")
             }
         }
+    }
+
+    companion object {
+        private const val TICK_INTERVAL = 1000L
     }
 }

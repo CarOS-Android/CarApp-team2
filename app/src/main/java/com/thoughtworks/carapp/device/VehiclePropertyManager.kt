@@ -4,10 +4,10 @@ import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import android.util.Log
 import com.thoughtworks.carapp.presentation.main.MainViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import javax.inject.Inject
 
 private const val PropertyDeliverRate = 10F
 
