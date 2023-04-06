@@ -1,5 +1,6 @@
 package com.thoughtworks.carapp.presentation.main
 
+import android.text.format.DateFormat.*
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.thoughtworks.carapp.domain.GetAutoHoldStatusUseCase
@@ -8,10 +9,14 @@ import com.thoughtworks.carapp.domain.GetParkingBreakStatusUseCase
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.channels.ticker
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 sealed interface MainScreenEvent : Event {
     object SwitchAutoHoldModeEvent : MainScreenEvent
@@ -44,6 +49,23 @@ class MainViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = true
     )
+
+    val clockText = MutableStateFlow("")
+
+    init {
+        startClockTick()
+    }
+
+    @OptIn(ObsoleteCoroutinesApi::class)
+    private fun startClockTick() {
+        val ticker = ticker(1000, 0)
+        viewModelScope.launch {
+            for (event in ticker) {
+                val currentTime = System.currentTimeMillis()
+                clockText.value = format("HH:mm", currentTime).toString()
+            }
+        }
+    }
 
     override fun handleEvents(event: Event) {
         when (event) {
