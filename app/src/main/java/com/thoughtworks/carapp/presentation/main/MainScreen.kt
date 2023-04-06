@@ -1,12 +1,10 @@
 package com.thoughtworks.carapp.presentation.main
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,6 +20,7 @@ import com.thoughtworks.carapp.R
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val isAutoHoldOn by viewModel.isAutoHoldOn.collectAsState()
     val isEngineOn by viewModel.isEngineOn.collectAsState()
+    val isDoorLockOn by viewModel.isDoorLockOn.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         AutoHoldButton(
@@ -55,5 +54,20 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             },
             contentDescription = null
         )
+
+        Column(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(start = 140.dp, top = 350.dp),
+            horizontalAlignment = Alignment.CenterHorizontally) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_car),
+                contentDescription = null
+            )
+
+            DoorLockButton(modifier = Modifier.size(104.dp, 50.dp), isDoorLockOn) {
+                viewModel.sendEvent(MainScreenEvent.SwitchDoorLockEvent)
+            }
+        }
     }
 }
