@@ -23,16 +23,17 @@ fun ParkingBreakButton(
     isOpened: Boolean,
     onSwitch: () -> Unit = {}
 ) {
-    Box(modifier = modifier
-        .clip(RoundedCornerShape(23.dp))
-        .background(color = Color.Unspecified, shape = RoundedCornerShape(23.dp))
-        .clickable(
-            interactionSource = remember { MutableInteractionSource() },
-            indication = LocalIndication.current,
-            onClick = onSwitch
-        )
-        .wrapContentSize(),
-    contentAlignment = Alignment.Center
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(23.dp))
+            .background(color = Color.Unspecified, shape = RoundedCornerShape(23.dp))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = LocalIndication.current,
+                onClick = onSwitch
+            )
+            .wrapContentSize(),
+        contentAlignment = Alignment.Center
     ) {
         Image(painter = painterResource(
             id = R.drawable.ic_parking_break_background),

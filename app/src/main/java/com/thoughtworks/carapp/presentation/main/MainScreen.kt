@@ -34,13 +34,13 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             viewModel.sendEvent(MainScreenEvent.SwitchAutoHoldModeEvent)
         }
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            ParkingBreakButton(modifier = Modifier
+        ParkingBreakButton(
+            modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 200.dp),
-                isParkingBreakOn) {
-                viewModel.sendEvent(MainScreenEvent.SwitchParkingBreakEvent)
-            }
+            isParkingBreakOn
+        ) {
+            viewModel.sendEvent(MainScreenEvent.SwitchParkingBreakEvent)
         }
 
         Image(
