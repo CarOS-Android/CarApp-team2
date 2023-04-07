@@ -1,61 +1,60 @@
 package com.thoughtworks.carapp.presentation.main
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.carapp.R
+import com.thoughtworks.carapp.presentation.main.optionsmenu.OptionsList
 
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val isAutoHoldOn by viewModel.isAutoHoldOn.collectAsState()
-    val isEngineOn by viewModel.isEngineOn.collectAsState()
+    val isParkingBreakOn by viewModel.isParkingBreakOn.collectAsState()
     val isDoorLockOn by viewModel.isDoorLockOn.collectAsState()
     val isDoorRearOn by viewModel.isDoorRearOn.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        AutoHoldButton(
+        Column(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 55.dp),
-            isAutoHoldOn
+                .padding(bottom = 92.dp, end = 888.dp)
+                .align(Alignment.BottomEnd),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            viewModel.sendEvent(MainScreenEvent.SwitchAutoHoldModeEvent)
+            ParkingBreakButton(isParkingBreakOn) {
+                viewModel.sendEvent(MainScreenEvent.SwitchParkingBreakEvent)
+            }
+            Spacer(modifier = Modifier.height(43.dp))
+            AutoHoldButton(isAutoHoldOn) {
+                viewModel.sendEvent(MainScreenEvent.SwitchAutoHoldEvent)
+            }
         }
 
-        Image(
+        ConstraintLayout(createConstraints()) {
+            ClockAndSiri(viewModel)
+            EngineButton(viewModel)
+        }
+
+        Column(
             modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(start = 752.dp, top = 32.dp)
-                .size(200.dp, 200.dp)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    if (isEngineOn) {
-                        viewModel.sendEvent(MainScreenEvent.StopEngineEvent)
-                    } else {
-                        viewModel.sendEvent(MainScreenEvent.StartEngineEvent)
-                    }
-                },
-            painter = if (isEngineOn) {
-                painterResource(id = R.drawable.ic_engine_started)
-            } else {
-                painterResource(id = R.drawable.ic_engine_normal)
-            },
-            contentDescription = null
-        )
+                .padding(top = 86.dp, end = 80.dp, bottom = 90.dp)
+                .width(690.dp)
+                .align(Alignment.CenterEnd)
+        ) {
+            NavigationMap()
+            Spacer(modifier = Modifier.height(252.dp))
+            OptionsList()
+        }
 
         Column(
             modifier = Modifier
@@ -82,15 +81,45 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
         ) {
             viewModel.sendEvent(MainScreenEvent.SwitchDoorRearEvent)
         }
-
-        Image(
-            painter = painterResource(id = R.drawable.ic_map),
-            contentDescription = null,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(start = 1030.dp, top = 86.dp)
-                .size(690.dp, 556.dp)
-                .background(color = Color.Unspecified)
-        )
     }
+}
+
+private fun createConstraints(): ConstraintSet {
+    return ConstraintSet {
+        val topGuideLine = createGuidelineFromTop(141.dp)
+
+        val clock = createRefFor("clock")
+        val siri = createRefFor("siri")
+        val engine = createRefFor("engine")
+
+        constrain(clock) {
+            top.linkTo(topGuideLine)
+            bottom.linkTo(topGuideLine)
+            start.linkTo(parent.start, 48.dp)
+        }
+        constrain(siri) {
+            top.linkTo(topGuideLine)
+            bottom.linkTo(topGuideLine)
+            start.linkTo(clock.end)
+        }
+        constrain(engine) {
+            top.linkTo(topGuideLine)
+            bottom.linkTo(topGuideLine)
+            start.linkTo(parent.start, 752.dp)
+        }
+    }
+}
+
+@Composable
+private fun NavigationMap() {
+    Image(
+        painter = painterResource(id = R.drawable.img_nav_map),
+        contentDescription = ""
+    )
+}
+
+@Preview(showBackground = true, device = Devices.DESKTOP)
+@Composable
+fun MainScreenPreview() {
+    MainScreen()
 }

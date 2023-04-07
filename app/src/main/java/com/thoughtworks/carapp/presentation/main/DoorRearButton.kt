@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.thoughtworks.carapp.R
+import com.thoughtworks.carapp.presentation.theme.LightBlue
+import com.thoughtworks.carapp.presentation.theme.LightGray
 
 @Composable
 fun DoorRearButton(
@@ -21,9 +23,9 @@ fun DoorRearButton(
         modifier = modifier
             .background(
                 color = if (isLocked) {
-                    Color(0xFF606060)
+                    LightGray
                 } else {
-                    Color(0xFF25BEFA)
+                    LightBlue
                 },
                 shape = CircleShape
             )

@@ -4,21 +4,16 @@ import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import android.util.Log
 import com.thoughtworks.carapp.presentation.main.MainViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-
-private const val PropertyDeliverRate = 10F
+import javax.inject.Inject
 
 class VehiclePropertyManager @Inject constructor(
     private val carPropertyManager: CarPropertyManager
 ) {
 
-    fun getPropertyFlow(
-        propId: Int,
-        rate: Float = PropertyDeliverRate
-    ): Flow<CarPropertyValue<*>?> = callbackFlow {
+    fun getPropertyFlow(propId: Int, rate: Float): Flow<CarPropertyValue<*>?> = callbackFlow {
         val propertyCallback = object : CarPropertyManager.CarPropertyEventCallback {
             override fun onChangeEvent(value: CarPropertyValue<*>?) {
                 trySend(value)

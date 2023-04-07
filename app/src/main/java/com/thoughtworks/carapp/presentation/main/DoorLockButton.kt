@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.thoughtworks.carapp.R
+import com.thoughtworks.carapp.presentation.theme.LightBlue
+import com.thoughtworks.carapp.presentation.theme.LightGray
 
 @Composable
 fun DoorLockButton(
@@ -25,9 +27,9 @@ fun DoorLockButton(
             .clip(RoundedCornerShape(25.dp))
             .background(color = Color.Unspecified, shape = RoundedCornerShape(25.dp)),
         colors = if (isLocked) {
-            ButtonDefaults.buttonColors(backgroundColor = Color(0xFF606060))
+            ButtonDefaults.buttonColors(backgroundColor = LightGray)
         } else {
-            ButtonDefaults.buttonColors(backgroundColor = Color(0xFF25BEFA))
+            ButtonDefaults.buttonColors(backgroundColor = LightBlue)
         }
     ) {
         Image(

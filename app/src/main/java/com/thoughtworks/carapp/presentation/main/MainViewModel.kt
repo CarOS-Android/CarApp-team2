@@ -1,77 +1,113 @@
 package com.thoughtworks.carapp.presentation.main
 
+import android.text.format.DateFormat
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.thoughtworks.carapp.domain.*
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.channels.ticker
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed interface MainScreenEvent : Event {
-    object SwitchAutoHoldModeEvent : MainScreenEvent
-    object StartEngineEvent : MainScreenEvent
-    object StopEngineEvent : MainScreenEvent
+    object SwitchAutoHoldEvent : MainScreenEvent
+    object EngineClickedEvent : MainScreenEvent
+    object SwitchParkingBreakEvent : MainScreenEvent
     object SwitchDoorLockEvent : MainScreenEvent
     object SwitchDoorRearEvent : MainScreenEvent
 }
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    getAutoHoldStatusUseCase: GetAutoHoldStatusUseCase,
-    getEngineStatusUseCase: GetEngineStatusUseCase,
-    getDoorLockStatusUseCase: GetDoorLockStatusUseCase,
-    getDoorRearStatusUseCase: GetDoorRearStatusUseCase,
-    private val setDoorLockStatusUseCase: SetDoorLockStatusUseCase,
-    private val setDoorRearStatusUseCase: SetDoorRearStatusUseCase
+    getAutoHoldStatus: GetAutoHoldStatusUseCase,
+    getEngineStatus: GetEngineStatusUseCase,
+    getParkingBreakStatus: GetParkingBreakStatusUseCase,
+    getDoorLockStatus: GetDoorLockStatusUseCase,
+    getDoorRearStatus: GetDoorRearStatusUseCase,
+    private val setDoorLockStatus: SetDoorLockStatusUseCase,
+    private val setDoorRearStatus: SetDoorRearStatusUseCase
 ) : BaseViewModel() {
-
-    val isAutoHoldOn: StateFlow<Boolean> = getAutoHoldStatusUseCase().stateIn(
+    val isAutoHoldOn: StateFlow<Boolean> = getAutoHoldStatus().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = false
     )
 
-    val isEngineOn: StateFlow<Boolean> = getEngineStatusUseCase().stateIn(
+    val isEngineStart: StateFlow<Boolean> = getEngineStatus().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = false
     )
 
-    val isDoorLockOn: StateFlow<Boolean> = getDoorLockStatusUseCase().stateIn(
+    val isDoorLockOn: StateFlow<Boolean> = getDoorLockStatus().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = true
     )
 
-    val isDoorRearOn: StateFlow<Int> = getDoorRearStatusUseCase().stateIn(
+    val isParkingBreakOn: StateFlow<Boolean> = getParkingBreakStatus().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = true
+    )
+
+    val isDoorRearOn: StateFlow<Int> = getDoorRearStatus().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = 0
     )
 
+    val clockText = MutableStateFlow("")
+
+    init {
+        startClockTick()
+    }
+
+    @OptIn(ObsoleteCoroutinesApi::class)
+    private fun startClockTick() {
+        val ticker = ticker(TICK_INTERVAL, 0)
+        viewModelScope.launch {
+            for (event in ticker) {
+                val currentTime = System.currentTimeMillis()
+                clockText.value = DateFormat.format("HH:mm", currentTime).toString()
+            }
+        }
+    }
+
     override fun handleEvents(event: Event) {
         when (event) {
-            MainScreenEvent.SwitchAutoHoldModeEvent -> {
+            MainScreenEvent.SwitchAutoHoldEvent -> {
                 Log.i(MainViewModel::class.simpleName, "Change Auto mode")
             }
-            MainScreenEvent.StartEngineEvent -> {
-                Log.i(MainViewModel::class.simpleName, "Start engine")
+            MainScreenEvent.EngineClickedEvent -> {
+                if (isEngineStart.value.not()) {
+                    Log.i(MainViewModel::class.simpleName, "Start engine")
+                } else {
+                    Log.i(MainViewModel::class.simpleName, "Stop engine")
+                }
             }
-            MainScreenEvent.StopEngineEvent -> {
-                Log.i(MainViewModel::class.simpleName, "Stop engine")
+            MainScreenEvent.SwitchParkingBreakEvent -> {
+                Log.i(MainViewModel::class.simpleName, "Change Parking Break mode")
             }
             MainScreenEvent.SwitchDoorLockEvent -> {
                 Log.i(MainViewModel::class.simpleName, "Change Door Lock mode")
-                setDoorLockStatusUseCase(isDoorLockOn.value.not())
+                setDoorLockStatus(isDoorLockOn.value.not())
             }
             MainScreenEvent.SwitchDoorRearEvent -> {
                 Log.i(MainViewModel::class.simpleName, "Change Door Rear mode")
-                setDoorRearStatusUseCase(if (isDoorRearOn.value == 0) 1 else 0)
+                setDoorRearStatus(if (isDoorRearOn.value == 0) 1 else 0)
             }
         }
+    }
+
+    companion object {
+        private const val TICK_INTERVAL = 1000L
     }
 }
