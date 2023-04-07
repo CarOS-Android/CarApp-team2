@@ -25,6 +25,12 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val isDoorRearOn by viewModel.isDoorRearOn.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
+        AcBox(
+            modifier = Modifier
+                .padding(bottom = 92.dp, start = 51.dp)
+                .align(Alignment.BottomStart),
+        )
+
         Column(
             modifier = Modifier
                 .padding(bottom = 92.dp, end = 888.dp)
@@ -40,7 +46,7 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             }
         }
 
-        ConstraintLayout(createConstraints()) {
+        ConstraintLayout(createClockAndSiriConstraints()) {
             ClockAndSiri(viewModel)
             EngineButton(viewModel)
         }
@@ -52,7 +58,9 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                 .align(Alignment.CenterEnd)
         ) {
             NavigationMap()
-            Spacer(modifier = Modifier.height(252.dp))
+            Spacer(modifier = Modifier.height(32.dp))
+            MusicPlay()
+            Spacer(modifier = Modifier.height(32.dp))
             OptionsList()
         }
 
@@ -81,10 +89,15 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
         ) {
             viewModel.sendEvent(MainScreenEvent.SwitchDoorRearEvent)
         }
+
+        val isParking by viewModel.isParking.collectAsState()
+        if (!isParking) {
+            CarLightUI(viewModel)
+        }
     }
 }
 
-private fun createConstraints(): ConstraintSet {
+private fun createClockAndSiriConstraints(): ConstraintSet {
     return ConstraintSet {
         val topGuideLine = createGuidelineFromTop(141.dp)
 
@@ -108,6 +121,14 @@ private fun createConstraints(): ConstraintSet {
             start.linkTo(parent.start, 752.dp)
         }
     }
+}
+
+@Composable
+private fun MusicPlay() {
+    Image(
+        painter = painterResource(id = R.drawable.img_music),
+        contentDescription = null
+    )
 }
 
 @Composable
