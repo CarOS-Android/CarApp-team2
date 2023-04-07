@@ -53,6 +53,14 @@ class CarLightUseCase @Inject constructor(private val vehiclePropertyManager: Ve
         changeLightState(VehiclePropertyIds.HEADLIGHTS_SWITCH, LIGHT_OFF)
     }
 
+    fun turnOffHighBeamLight() {
+        changeLightState(VehiclePropertyIds.HIGH_BEAM_LIGHTS_SWITCH, LIGHT_OFF)
+    }
+
+    fun turnOnHighBeamLight() {
+        changeLightState(VehiclePropertyIds.HIGH_BEAM_LIGHTS_SWITCH, LIGHT_ON)
+    }
+
     companion object {
         const val LIGHT_ON = 1
         const val LIGHT_OFF = 0

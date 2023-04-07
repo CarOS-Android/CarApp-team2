@@ -28,6 +28,7 @@ sealed interface MainScreenEvent : Event {
 
     object HazardLightEvent : MainScreenEvent
     object HeadLightEvent : MainScreenEvent
+    object HighBeamLightEvent : MainScreenEvent
 }
 
 @HiltViewModel
@@ -42,6 +43,7 @@ class MainViewModel @Inject constructor(
     val isParkingBreakOn: StateFlow<Boolean> = getParkingBreakStatusUseCase().stateWith(true)
     val isHazardLightOn = carLightUseCase.hazardLightFlow().stateWith(false)
     val isHeadLightOn=carLightUseCase.headLightFlow().stateWith(initValue = false)
+    val isHighBeamLightOn = carLightUseCase.highBeamLightFlow().stateWith(false)
 
     val clockText = MutableStateFlow("")
 
@@ -83,6 +85,13 @@ class MainViewModel @Inject constructor(
                     carLightUseCase.turnOffHeadLight()
                 } else {
                     carLightUseCase.turnOnHeadLight()
+                }
+            }
+            MainScreenEvent.HighBeamLightEvent -> {
+                if (isHighBeamLightOn.value){
+                    carLightUseCase.turnOffHighBeamLight()
+                }else{
+                    carLightUseCase.turnOnHighBeamLight()
                 }
             }
         }
