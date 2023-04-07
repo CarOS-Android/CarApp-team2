@@ -7,4 +7,5 @@
     <color name="transparent">#00000000</color>
 
     <color name="clock_color">#F1F3F5</color>
+    <color name="light_button_background_color">#FF292929</color>
 </resources>

@@ -49,10 +49,12 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             viewModel.sendEvent(MainScreenEvent.SwitchParkingBreakEvent)
         }
 
-        ConstraintLayout(createConstraints()) {
+        ConstraintLayout(createClockAndSiriConstraints()) {
             ClockAndSiri(viewModel)
             EngineButton(viewModel)
         }
+
+        CarLightUI(viewModel)
     }
 }
 
@@ -100,7 +102,7 @@ private fun EngineButton(viewModel: MainViewModel) {
     )
 }
 
-private fun createConstraints(): ConstraintSet {
+private fun createClockAndSiriConstraints(): ConstraintSet {
     return ConstraintSet {
         val topGuideLine = createGuidelineFromTop(141.dp)
 

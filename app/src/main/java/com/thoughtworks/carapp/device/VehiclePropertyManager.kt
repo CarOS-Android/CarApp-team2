@@ -12,8 +12,12 @@ import javax.inject.Inject
 private const val PropertyDeliverRate = 10F
 
 class VehiclePropertyManager @Inject constructor(
-    private val carPropertyManager: CarPropertyManager
+    val carPropertyManager: CarPropertyManager
 ) {
+
+    inline fun <reified T> setProperty(propId: Int, areaId: Int, state: T) {
+        carPropertyManager.setProperty(T::class.java, propId, areaId, state)
+    }
 
     fun getPropertyFlow(
         propId: Int,
