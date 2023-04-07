@@ -23,12 +23,11 @@ import com.thoughtworks.carapp.R
 
 @Composable
 fun ParkingBreakButton(
-    modifier: Modifier = Modifier,
     isOpened: Boolean,
     onSwitch: () -> Unit = {}
 ) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .clip(RoundedCornerShape(23.dp))
             .background(color = Color.Unspecified, shape = RoundedCornerShape(23.dp))
             .clickable(
@@ -40,16 +39,12 @@ fun ParkingBreakButton(
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(
-                id = R.drawable.ic_parking_break_background
-            ),
+            painter = painterResource(id = R.drawable.ic_parking_break_background),
             contentDescription = ""
         )
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
-                painter = painterResource(
-                    id = R.drawable.ic_parking_break
-                ),
+                painter = painterResource(id = R.drawable.ic_parking_break),
                 contentDescription = ""
             )
             Spacer(modifier = Modifier.height(15.dp))

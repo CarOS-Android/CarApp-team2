@@ -20,30 +20,29 @@ import javax.inject.Inject
 
 sealed interface MainScreenEvent : Event {
     object SwitchAutoHoldModeEvent : MainScreenEvent
-    object StartEngineEvent : MainScreenEvent
-    object StopEngineEvent : MainScreenEvent
+    object EngineClickedEvent : MainScreenEvent
     object SwitchParkingBreakEvent : MainScreenEvent
 }
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    getAutoHoldStatusUseCase: GetAutoHoldStatusUseCase,
-    getEngineStatusUseCase: GetEngineStatusUseCase,
-    getParkingBreakStatusUseCase: GetParkingBreakStatusUseCase
+    getAutoHoldStatus: GetAutoHoldStatusUseCase,
+    getEngineStatus: GetEngineStatusUseCase,
+    getParkingBreakStatus: GetParkingBreakStatusUseCase
 ) : BaseViewModel() {
-    val isAutoHoldOn: StateFlow<Boolean> = getAutoHoldStatusUseCase().stateIn(
+    val isAutoHoldOn: StateFlow<Boolean> = getAutoHoldStatus().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = false
     )
 
-    val isEngineOn: StateFlow<Boolean> = getEngineStatusUseCase().stateIn(
+    val isEngineStart: StateFlow<Boolean> = getEngineStatus().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = false
     )
 
-    val isParkingBreakOn: StateFlow<Boolean> = getParkingBreakStatusUseCase().stateIn(
+    val isParkingBreakOn: StateFlow<Boolean> = getParkingBreakStatus().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = true
@@ -71,8 +70,12 @@ class MainViewModel @Inject constructor(
             MainScreenEvent.SwitchAutoHoldModeEvent -> {
                 Log.i(MainViewModel::class.simpleName, "Change Auto mode")
             }
-            MainScreenEvent.StopEngineEvent -> {
-                Log.i(MainViewModel::class.simpleName, "Stop engine")
+            MainScreenEvent.EngineClickedEvent -> {
+                if (isEngineStart.value.not()) {
+                    Log.i(MainViewModel::class.simpleName, "Start engine")
+                } else {
+                    Log.i(MainViewModel::class.simpleName, "Stop engine")
+                }
             }
             MainScreenEvent.SwitchParkingBreakEvent -> {
                 Log.i(MainViewModel::class.simpleName, "Change Parking Break mode")

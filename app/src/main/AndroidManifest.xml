@@ -6,6 +6,7 @@
 
     <uses-permission android:name="android.car.permission.CAR_POWERTRAIN" />
     <uses-permission android:name="android.car.permission.CONTROL_CAR_CLIMATE" />
+    <uses-permission android:name="android.car.permission.CONTROL_CAR_WINDOWS" />
 
     <application
         android:name=".MainApplication"
