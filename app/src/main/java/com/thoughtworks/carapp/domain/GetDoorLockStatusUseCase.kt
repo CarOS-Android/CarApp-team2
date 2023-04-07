@@ -24,13 +24,8 @@ class GetDoorLockStatusUseCase @Inject constructor(
         ).map {
             it?.let {
                 doorLockedMap[it.areaId] = it.value as Boolean
-                doorLockedMap[VehicleAreaDoor.DOOR_ROW_1_LEFT] == true &&
-                        doorLockedMap[VehicleAreaDoor.DOOR_ROW_1_RIGHT] == true &&
-                        doorLockedMap[VehicleAreaDoor.DOOR_ROW_2_LEFT] == true &&
-                        doorLockedMap[VehicleAreaDoor.DOOR_ROW_2_RIGHT] == true
-            } ?: let {
-                false
-            }
+                doorLockedMap.values.all { item -> item }
+            } ?: false
         }
     }
 }

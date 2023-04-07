@@ -77,7 +77,7 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                 .align(Alignment.TopStart)
                 .padding(start = 725.dp, top = 302.dp)
                 .size(16.8.dp, 22.4.dp),
-            isDoorRearOn == 0
+            isDoorRearOn
         ) {
             viewModel.sendEvent(MainScreenEvent.SwitchDoorRearEvent)
         }

@@ -58,10 +58,10 @@ class MainViewModel @Inject constructor(
         initialValue = true
     )
 
-    val isDoorRearOn: StateFlow<Int> = getDoorRearStatus().stateIn(
+    val isDoorRearOn: StateFlow<Boolean> = getDoorRearStatus().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = 0
+        initialValue = true
     )
 
     val clockText = MutableStateFlow("")
@@ -102,7 +102,7 @@ class MainViewModel @Inject constructor(
             }
             MainScreenEvent.SwitchDoorRearEvent -> {
                 Log.i(MainViewModel::class.simpleName, "Change Door Rear mode")
-                setDoorRearStatus(if (isDoorRearOn.value == 0) 1 else 0)
+                setDoorRearStatus(isDoorRearOn.value.not())
             }
         }
     }
