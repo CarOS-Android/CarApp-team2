@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,12 +23,11 @@ import com.thoughtworks.carapp.R
 
 @Composable
 fun AutoHoldButton(
-    modifier: Modifier = Modifier,
     isOpened: Boolean,
     onSwitch: () -> Unit = {}
 ) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .clip(RoundedCornerShape(23.dp))
             .background(color = Color.Unspecified, shape = RoundedCornerShape(23.dp))
             .clickable(
@@ -40,7 +38,7 @@ fun AutoHoldButton(
             .wrapContentSize(),
         contentAlignment = Alignment.Center
     ) {
-        Icon(
+        Image(
             painter = painterResource(id = R.drawable.ic_auto_hold_background),
             contentDescription = ""
         )
