@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,7 +27,10 @@ fun CarLightUI(viewModel: MainViewModel) {
     val isHeadLightOn by viewModel.isHeadLightOn.collectAsState()
     val isHighBeamLightOn by viewModel.isHighBeamLightOn.collectAsState()
 
-    ConstraintLayout(createCarLightsConstraints()) {
+    ConstraintLayout(
+        createCarLightsConstraints(),
+        modifier = Modifier.fillMaxSize()
+    ) {
         Image(
             modifier = Modifier.layoutId("car"),
             painter = painterResource(id = R.drawable.ic_car_lights_on),
@@ -65,10 +69,12 @@ fun CarLightUI(viewModel: MainViewModel) {
                 )
                 .padding(horizontal = 31.dp, vertical = 13.dp)
                 .clickable(
-                    interactionSource = remember { MutableInteractionSource() }, indication = null
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
                 ) {
                     viewModel.sendEvent(MainScreenEvent.HeadLightEvent)
-                }, painter = if (isHeadLightOn) {
+                },
+            painter = if (isHeadLightOn) {
                 painterResource(id = R.drawable.ic_head_light_on)
             } else {
                 painterResource(id = R.drawable.ic_head_light_off)

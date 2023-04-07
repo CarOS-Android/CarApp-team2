@@ -54,7 +54,10 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             EngineButton(viewModel)
         }
 
-        CarLightUI(viewModel)
+        val isParking by viewModel.isParking.collectAsState()
+        if (!isParking) {
+            CarLightUI(viewModel)
+        }
     }
 }
 

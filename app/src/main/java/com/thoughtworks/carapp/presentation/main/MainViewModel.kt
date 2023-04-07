@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.thoughtworks.carapp.domain.CarLightUseCase
 import com.thoughtworks.carapp.domain.GetAutoHoldStatusUseCase
 import com.thoughtworks.carapp.domain.GetEngineStatusUseCase
+import com.thoughtworks.carapp.domain.GetGearUseCase
 import com.thoughtworks.carapp.domain.GetParkingBreakStatusUseCase
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
@@ -36,15 +37,17 @@ class MainViewModel @Inject constructor(
     getAutoHoldStatusUseCase: GetAutoHoldStatusUseCase,
     getEngineStatusUseCase: GetEngineStatusUseCase,
     getParkingBreakStatusUseCase: GetParkingBreakStatusUseCase,
+    getGearUseCase: GetGearUseCase,
     private val carLightUseCase: CarLightUseCase,
 ) : BaseViewModel() {
     val isAutoHoldOn: StateFlow<Boolean> = getAutoHoldStatusUseCase().stateWith(false)
     val isEngineOn: StateFlow<Boolean> = getEngineStatusUseCase().stateWith(false)
     val isParkingBreakOn: StateFlow<Boolean> = getParkingBreakStatusUseCase().stateWith(true)
     val isHazardLightOn = carLightUseCase.hazardLightFlow().stateWith(false)
-    val isHeadLightOn=carLightUseCase.headLightFlow().stateWith(initValue = false)
+    val isHeadLightOn = carLightUseCase.headLightFlow().stateWith(false)
     val isHighBeamLightOn = carLightUseCase.highBeamLightFlow().stateWith(false)
 
+    val isParking = getGearUseCase().stateWith(true)
     val clockText = MutableStateFlow("")
 
     init {
@@ -88,9 +91,9 @@ class MainViewModel @Inject constructor(
                 }
             }
             MainScreenEvent.HighBeamLightEvent -> {
-                if (isHighBeamLightOn.value){
+                if (isHighBeamLightOn.value) {
                     carLightUseCase.turnOffHighBeamLight()
-                }else{
+                } else {
                     carLightUseCase.turnOnHighBeamLight()
                 }
             }
