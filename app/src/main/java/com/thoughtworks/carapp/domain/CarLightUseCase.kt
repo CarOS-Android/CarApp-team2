@@ -45,6 +45,13 @@ class CarLightUseCase @Inject constructor(private val vehiclePropertyManager: Ve
     fun turnOffHazardLight() {
         changeLightState(VehiclePropertyIds.HAZARD_LIGHTS_SWITCH, LIGHT_OFF)
     }
+    fun turnOnHeadLight() {
+        changeLightState(VehiclePropertyIds.HEADLIGHTS_SWITCH, LIGHT_ON)
+    }
+
+    fun turnOffHeadLight() {
+        changeLightState(VehiclePropertyIds.HEADLIGHTS_SWITCH, LIGHT_OFF)
+    }
 
     companion object {
         const val LIGHT_ON = 1

@@ -23,6 +23,8 @@ import com.thoughtworks.carapp.R
 @Composable
 fun CarLightUI(viewModel: MainViewModel) {
     val isHazardLightOn by viewModel.isHazardLightOn.collectAsState()
+    val isHeadLightOn by viewModel.isHeadLightOn.collectAsState()
+
 
     ConstraintLayout(createCarLightsConstraints()) {
         Image(
@@ -40,17 +42,14 @@ fun CarLightUI(viewModel: MainViewModel) {
                 )
                 .padding(horizontal = 30.dp, vertical = 24.dp)
                 .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
+                    interactionSource = remember { MutableInteractionSource() }, indication = null
                 ) {
                     viewModel.sendEvent(MainScreenEvent.HazardLightEvent)
-                },
-            painter = if (isHazardLightOn) {
+                }, painter = if (isHazardLightOn) {
                 painterResource(id = R.drawable.ic_hazard_light_on)
             } else {
                 painterResource(id = R.drawable.ic_hazard_light_off)
-            },
-            contentDescription = null
+            }, contentDescription = null
         )
         Image(
             modifier = Modifier
@@ -61,8 +60,16 @@ fun CarLightUI(viewModel: MainViewModel) {
                     colorResource(id = R.color.light_button_background_color),
                     shape = RoundedCornerShape(18.dp)
                 )
-                .padding(horizontal = 31.dp, vertical = 13.dp),
-            painter = painterResource(id = R.drawable.ic_head_light_off),
+                .padding(horizontal = 31.dp, vertical = 13.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() }, indication = null
+                ) {
+                    viewModel.sendEvent(MainScreenEvent.HeadLightEvent)
+                }, painter = if (isHeadLightOn) {
+                painterResource(id = R.drawable.ic_head_light_on)
+            } else {
+                painterResource(id = R.drawable.ic_head_light_off)
+            },
             contentDescription = null
         )
         Image(
@@ -74,8 +81,9 @@ fun CarLightUI(viewModel: MainViewModel) {
                     shape = RoundedCornerShape(18.dp)
                 )
                 .padding(horizontal = 31.dp, vertical = 13.dp),
-            painter = painterResource(id = R.drawable.ic_high_beam_light_off),
-            contentDescription = null
+
+        painter = painterResource(id = R.drawable.ic_high_beam_light_off),
+        contentDescription = null
         )
     }
 }
@@ -110,7 +118,8 @@ private fun createCarLightsConstraints(): ConstraintSet {
             bottom.linkTo(hazardLightButton.bottom)
         }
 
-        val lightChain = createHorizontalChain(hazardLightButton, headLightButton, highBeamLightButton)
+        val lightChain =
+            createHorizontalChain(hazardLightButton, headLightButton, highBeamLightButton)
         constrain(lightChain) {
             start.linkTo(car.start)
             end.linkTo(car.end)
