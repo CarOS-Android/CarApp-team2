@@ -44,7 +44,7 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             }
         }
 
-        ConstraintLayout(createConstraints()) {
+        ConstraintLayout(createClockAndSiriConstraints()) {
             ClockAndSiri(viewModel)
             EngineButton(viewModel)
         }
@@ -59,10 +59,15 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(252.dp))
             OptionsList()
         }
+
+        val isParking by viewModel.isParking.collectAsState()
+        if (!isParking) {
+            CarLightUI(viewModel)
+        }
     }
 }
 
-private fun createConstraints(): ConstraintSet {
+private fun createClockAndSiriConstraints(): ConstraintSet {
     return ConstraintSet {
         val topGuideLine = createGuidelineFromTop(141.dp)
 

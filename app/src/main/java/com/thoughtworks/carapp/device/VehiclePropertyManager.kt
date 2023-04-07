@@ -10,8 +10,12 @@ import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class VehiclePropertyManager @Inject constructor(
-    private val carPropertyManager: CarPropertyManager
+    val carPropertyManager: CarPropertyManager
 ) {
+
+    inline fun <reified T> setProperty(propId: Int, areaId: Int, state: T) {
+        carPropertyManager.setProperty(T::class.java, propId, areaId, state)
+    }
 
     fun getPropertyFlow(propId: Int, rate: Float): Flow<CarPropertyValue<*>?> = callbackFlow {
         val propertyCallback = object : CarPropertyManager.CarPropertyEventCallback {
