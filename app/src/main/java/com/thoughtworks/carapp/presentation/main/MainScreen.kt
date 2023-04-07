@@ -1,29 +1,27 @@
 package com.thoughtworks.carapp.presentation.main
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.carapp.R
+import com.thoughtworks.carapp.presentation.main.optionsmenu.OptionsList
 
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
@@ -31,73 +29,37 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val isParkingBreakOn by viewModel.isParkingBreakOn.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        AutoHoldButton(
+        Column(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 55.dp),
-            isAutoHoldOn
+                .padding(bottom = 92.dp, end = 888.dp)
+                .align(Alignment.BottomEnd),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            viewModel.sendEvent(MainScreenEvent.SwitchAutoHoldModeEvent)
-        }
-
-        ParkingBreakButton(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 200.dp),
-            isParkingBreakOn
-        ) {
-            viewModel.sendEvent(MainScreenEvent.SwitchParkingBreakEvent)
+            ParkingBreakButton(isParkingBreakOn) {
+                viewModel.sendEvent(MainScreenEvent.SwitchParkingBreakEvent)
+            }
+            Spacer(modifier = Modifier.height(43.dp))
+            AutoHoldButton(isAutoHoldOn) {
+                viewModel.sendEvent(MainScreenEvent.SwitchAutoHoldModeEvent)
+            }
         }
 
         ConstraintLayout(createConstraints()) {
             ClockAndSiri(viewModel)
             EngineButton(viewModel)
         }
+
+        Column(
+            modifier = Modifier
+                .padding(top = 86.dp, end = 80.dp, bottom = 90.dp)
+                .width(690.dp)
+                .align(Alignment.CenterEnd)
+        ) {
+            NavigationMap()
+            Spacer(modifier = Modifier.height(252.dp))
+            OptionsList()
+        }
     }
-}
-
-@Composable
-private fun ClockAndSiri(viewModel: MainViewModel) {
-    val clockText by viewModel.clockText.collectAsState()
-    Text(
-        modifier = Modifier
-            .layoutId("clock")
-            .width(240.dp),
-        text = clockText,
-        fontSize = 96.sp,
-        color = colorResource(id = R.color.clock_color)
-    )
-    Image(
-        modifier = Modifier.layoutId("siri"),
-        painter = painterResource(R.drawable.ic_siri),
-        contentDescription = null
-    )
-}
-
-@Composable
-private fun EngineButton(viewModel: MainViewModel) {
-    val isEngineOn by viewModel.isEngineOn.collectAsState()
-    Image(
-        modifier = Modifier
-            .layoutId("engine")
-            .size(200.dp, 200.dp)
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null
-            ) {
-                if (isEngineOn) {
-                    viewModel.sendEvent(MainScreenEvent.StopEngineEvent)
-                } else {
-                    viewModel.sendEvent(MainScreenEvent.StartEngineEvent)
-                }
-            },
-        painter = if (isEngineOn) {
-            painterResource(id = R.drawable.ic_engine_started)
-        } else {
-            painterResource(id = R.drawable.ic_engine_normal)
-        },
-        contentDescription = null
-    )
 }
 
 private fun createConstraints(): ConstraintSet {
@@ -124,4 +86,18 @@ private fun createConstraints(): ConstraintSet {
             start.linkTo(parent.start, 752.dp)
         }
     }
+}
+
+@Composable
+private fun NavigationMap() {
+    Image(
+        painter = painterResource(id = R.drawable.img_nav_map),
+        contentDescription = ""
+    )
+}
+
+@Preview(showBackground = true, device = Devices.DESKTOP)
+@Composable
+fun MainScreenPreview() {
+    MainScreen()
 }

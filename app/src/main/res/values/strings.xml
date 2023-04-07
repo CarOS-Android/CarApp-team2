@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Carapp</string>
+
+    <!--  MainScreen Options  -->
+    <string name="option_window_lock">Window lock</string>
+    <string name="option_fragrance">Fragrance</string>
+    <string name="option_wi_fi">Wi-Fi</string>
+    <string name="option_bluetooth">Bluetooth</string>
+    <string name="option_cellular">Cellular</string>
 </resources>

@@ -9,16 +9,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
-private const val PropertyDeliverRate = 10F
-
 class VehiclePropertyManager @Inject constructor(
     private val carPropertyManager: CarPropertyManager
 ) {
 
-    fun getPropertyFlow(
-        propId: Int,
-        rate: Float = PropertyDeliverRate
-    ): Flow<CarPropertyValue<*>?> = callbackFlow {
+    fun getPropertyFlow(propId: Int, rate: Float): Flow<CarPropertyValue<*>?> = callbackFlow {
         val propertyCallback = object : CarPropertyManager.CarPropertyEventCallback {
             override fun onChangeEvent(value: CarPropertyValue<*>?) {
                 trySend(value)
@@ -40,5 +35,9 @@ class VehiclePropertyManager @Inject constructor(
         )
 
         awaitClose { carPropertyManager.unregisterCallback(propertyCallback) }
+    }
+
+    fun setBooleanProperty(propId: Int, areaId: Int, value: Boolean) {
+        carPropertyManager.setBooleanProperty(propId, areaId, value)
     }
 }
