@@ -1,6 +1,7 @@
 package com.thoughtworks.carapp.presentation.main
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -80,5 +82,15 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
         ) {
             viewModel.sendEvent(MainScreenEvent.SwitchDoorRearEvent)
         }
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_map),
+            contentDescription = null,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(start = 1030.dp, top = 86.dp)
+                .size(690.dp, 556.dp)
+                .background(color = Color.Unspecified)
+        )
     }
 }
