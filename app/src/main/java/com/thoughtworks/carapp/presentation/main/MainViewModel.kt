@@ -91,6 +91,9 @@ class MainViewModel @Inject constructor(
                     carLightUseCase.turnOffHeadLight()
                 } else {
                     carLightUseCase.turnOnHeadLight()
+                    if (isHighBeamLightOn.value) {
+                        carLightUseCase.turnOffHighBeamLight()
+                    }
                 }
             }
             MainScreenEvent.HighBeamLightEvent -> {
@@ -98,6 +101,9 @@ class MainViewModel @Inject constructor(
                     carLightUseCase.turnOffHighBeamLight()
                 } else {
                     carLightUseCase.turnOnHighBeamLight()
+                    if (isHeadLightOn.value) {
+                        carLightUseCase.turnOffHeadLight()
+                    }
                 }
             }
         }

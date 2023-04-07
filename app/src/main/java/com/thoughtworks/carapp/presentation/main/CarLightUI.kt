@@ -74,7 +74,7 @@ fun CarLightUI(viewModel: MainViewModel) {
                 ) {
                     viewModel.sendEvent(MainScreenEvent.HeadLightEvent)
                 },
-            painter = if (isHeadLightOn) {
+            painter = if (!isHighBeamLightOn && isHeadLightOn) {
                 painterResource(id = R.drawable.ic_head_light_on)
             } else {
                 painterResource(id = R.drawable.ic_head_light_off)
