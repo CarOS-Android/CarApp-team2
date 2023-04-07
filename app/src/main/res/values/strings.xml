@@ -7,8 +7,4 @@
     <string name="option_wi_fi">Wi-Fi</string>
     <string name="option_bluetooth">Bluetooth</string>
     <string name="option_cellular">Cellular</string>
-    <!--  AC  -->
-    <string name="ac_left">主驾</string>
-    <string name="ac_level">风量</string>
-    <string name="ac_right">副驾</string>
 </resources>
