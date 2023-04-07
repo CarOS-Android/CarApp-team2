@@ -2,9 +2,9 @@ package com.thoughtworks.carapp.domain
 
 import android.car.VehiclePropertyIds
 import com.thoughtworks.carapp.device.VehiclePropertyManager
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class GetAutoHoldStatusUseCase @Inject constructor(
     private val vehiclePropertyManager: VehiclePropertyManager

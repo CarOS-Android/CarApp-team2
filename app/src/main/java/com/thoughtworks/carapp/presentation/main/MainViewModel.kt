@@ -8,10 +8,10 @@ import com.thoughtworks.carapp.domain.GetParkingBreakStatusUseCase
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
 sealed interface MainScreenEvent : Event {
     object SwitchAutoHoldModeEvent : MainScreenEvent

@@ -5,7 +5,11 @@ import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -35,13 +39,17 @@ fun ParkingBreakButton(
             .wrapContentSize(),
         contentAlignment = Alignment.Center
     ) {
-        Image(painter = painterResource(
-            id = R.drawable.ic_parking_break_background),
+        Image(
+            painter = painterResource(
+                id = R.drawable.ic_parking_break_background
+            ),
             contentDescription = ""
         )
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Image(painter = painterResource(
-                id = R.drawable.ic_parking_break),
+            Image(
+                painter = painterResource(
+                    id = R.drawable.ic_parking_break
+                ),
                 contentDescription = ""
             )
             Spacer(modifier = Modifier.height(15.dp))
