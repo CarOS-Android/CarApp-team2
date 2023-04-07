@@ -55,7 +55,6 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                 .width(690.dp)
                 .align(Alignment.CenterEnd)
         ) {
-            viewModel.sendEvent(MainScreenEvent.SwitchParkingBreakEvent)
             NavigationMap()
             Spacer(modifier = Modifier.height(252.dp))
             OptionsList()
