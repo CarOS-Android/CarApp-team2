@@ -1,13 +1,7 @@
 package com.thoughtworks.carapp.presentation.main
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,6 +23,12 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val isParkingBreakOn by viewModel.isParkingBreakOn.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
+        AcBox(
+            modifier = Modifier
+                .padding(bottom = 92.dp, start = 51.dp)
+                .align(Alignment.BottomStart),
+        )
+
         Column(
             modifier = Modifier
                 .padding(bottom = 92.dp, end = 888.dp)
@@ -56,7 +56,9 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                 .align(Alignment.CenterEnd)
         ) {
             NavigationMap()
-            Spacer(modifier = Modifier.height(252.dp))
+            Spacer(modifier = Modifier.height(32.dp))
+            MusicPlay()
+            Spacer(modifier = Modifier.height(32.dp))
             OptionsList()
         }
     }
@@ -86,6 +88,14 @@ private fun createConstraints(): ConstraintSet {
             start.linkTo(parent.start, 752.dp)
         }
     }
+}
+
+@Composable
+private fun MusicPlay() {
+    Image(
+        painter = painterResource(id = R.drawable.img_music),
+        contentDescription = null
+    )
 }
 
 @Composable
