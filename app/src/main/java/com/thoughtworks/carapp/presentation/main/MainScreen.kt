@@ -1,6 +1,5 @@
 package com.thoughtworks.carapp.presentation.main
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -21,6 +20,7 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val isAutoHoldOn by viewModel.isAutoHoldOn.collectAsState()
     val isEngineOn by viewModel.isEngineOn.collectAsState()
     val isDoorLockOn by viewModel.isDoorLockOn.collectAsState()
+    val isDoorRearOn by viewModel.isDoorRearOn.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         AutoHoldButton(
@@ -59,7 +59,8 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(start = 140.dp, top = 350.dp),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_car),
                 contentDescription = null
@@ -68,6 +69,16 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             DoorLockButton(modifier = Modifier.size(104.dp, 50.dp), isDoorLockOn) {
                 viewModel.sendEvent(MainScreenEvent.SwitchDoorLockEvent)
             }
+        }
+
+        DoorRearButton(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(start = 725.dp, top = 302.dp)
+                .size(16.8.dp, 22.4.dp),
+            isDoorRearOn == 0
+        ) {
+            viewModel.sendEvent(MainScreenEvent.SwitchDoorRearEvent)
         }
     }
 }

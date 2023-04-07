@@ -23,7 +23,7 @@ fun DoorLockButton(
         onClick = onSwitch,
         modifier = modifier
             .clip(RoundedCornerShape(25.dp))
-            .background(color = Color.Unspecified), shape = RoundedCornerShape(25.dp),
+            .background(color = Color.Unspecified, shape = RoundedCornerShape(25.dp)),
         colors = if (isLocked) {
             ButtonDefaults.buttonColors(backgroundColor = Color(0xFF606060))
         } else {
@@ -32,11 +32,12 @@ fun DoorLockButton(
     ) {
         Image(
             painter = painterResource(
-            id = if (isLocked) {
-                R.drawable.ic_door_lock
-            } else {
-                R.drawable.ic_door_unlock
-            }),
+                id = if (isLocked) {
+                    R.drawable.ic_door_lock
+                } else {
+                    R.drawable.ic_door_unlock
+                }
+            ),
             contentDescription = null
         )
     }

@@ -2,10 +2,7 @@ package com.thoughtworks.carapp.presentation.main
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.thoughtworks.carapp.domain.GetAutoHoldStatusUseCase
-import com.thoughtworks.carapp.domain.GetDoorLockStatusUseCase
-import com.thoughtworks.carapp.domain.GetEngineStatusUseCase
-import com.thoughtworks.carapp.domain.SetDoorLockStatusUseCase
+import com.thoughtworks.carapp.domain.*
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +16,7 @@ sealed interface MainScreenEvent : Event {
     object StartEngineEvent : MainScreenEvent
     object StopEngineEvent : MainScreenEvent
     object SwitchDoorLockEvent : MainScreenEvent
+    object SwitchDoorRearEvent : MainScreenEvent
 }
 
 @HiltViewModel
@@ -26,7 +24,9 @@ class MainViewModel @Inject constructor(
     getAutoHoldStatusUseCase: GetAutoHoldStatusUseCase,
     getEngineStatusUseCase: GetEngineStatusUseCase,
     getDoorLockStatusUseCase: GetDoorLockStatusUseCase,
-    private val setDoorLockStatusUseCase: SetDoorLockStatusUseCase
+    getDoorRearStatusUseCase: GetDoorRearStatusUseCase,
+    private val setDoorLockStatusUseCase: SetDoorLockStatusUseCase,
+    private val setDoorRearStatusUseCase: SetDoorRearStatusUseCase
 ) : BaseViewModel() {
 
     val isAutoHoldOn: StateFlow<Boolean> = getAutoHoldStatusUseCase().stateIn(
@@ -47,6 +47,12 @@ class MainViewModel @Inject constructor(
         initialValue = true
     )
 
+    val isDoorRearOn: StateFlow<Int> = getDoorRearStatusUseCase().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = 0
+    )
+
     override fun handleEvents(event: Event) {
         when (event) {
             MainScreenEvent.SwitchAutoHoldModeEvent -> {
@@ -61,6 +67,10 @@ class MainViewModel @Inject constructor(
             MainScreenEvent.SwitchDoorLockEvent -> {
                 Log.i(MainViewModel::class.simpleName, "Change Door Lock mode")
                 setDoorLockStatusUseCase(isDoorLockOn.value.not())
+            }
+            MainScreenEvent.SwitchDoorRearEvent -> {
+                Log.i(MainViewModel::class.simpleName, "Change Door Rear mode")
+                setDoorRearStatusUseCase(if (isDoorRearOn.value == 0) 1 else 0)
             }
         }
     }
