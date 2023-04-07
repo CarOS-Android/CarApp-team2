@@ -21,6 +21,8 @@ import com.thoughtworks.carapp.presentation.main.optionsmenu.OptionsList
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val isAutoHoldOn by viewModel.isAutoHoldOn.collectAsState()
     val isParkingBreakOn by viewModel.isParkingBreakOn.collectAsState()
+    val isDoorLockOn by viewModel.isDoorLockOn.collectAsState()
+    val isDoorRearOn by viewModel.isDoorRearOn.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         AcBox(
@@ -40,7 +42,7 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             }
             Spacer(modifier = Modifier.height(43.dp))
             AutoHoldButton(isAutoHoldOn) {
-                viewModel.sendEvent(MainScreenEvent.SwitchAutoHoldModeEvent)
+                viewModel.sendEvent(MainScreenEvent.SwitchAutoHoldEvent)
             }
         }
 
@@ -60,6 +62,32 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             MusicPlay()
             Spacer(modifier = Modifier.height(32.dp))
             OptionsList()
+        }
+
+        Column(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(start = 140.dp, top = 350.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_car),
+                contentDescription = null
+            )
+
+            DoorLockButton(modifier = Modifier.size(104.dp, 50.dp), isDoorLockOn) {
+                viewModel.sendEvent(MainScreenEvent.SwitchDoorLockEvent)
+            }
+        }
+
+        DoorRearButton(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(start = 725.dp, top = 302.dp)
+                .size(16.8.dp, 22.4.dp),
+            isDoorRearOn
+        ) {
+            viewModel.sendEvent(MainScreenEvent.SwitchDoorRearEvent)
         }
 
         val isParking by viewModel.isParking.collectAsState()

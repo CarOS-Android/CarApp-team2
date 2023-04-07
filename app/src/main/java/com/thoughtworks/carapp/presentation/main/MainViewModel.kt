@@ -3,11 +3,15 @@ package com.thoughtworks.carapp.presentation.main
 import android.text.format.DateFormat
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.thoughtworks.carapp.domain.CarLightUseCase
 import com.thoughtworks.carapp.domain.GetAutoHoldStatusUseCase
 import com.thoughtworks.carapp.domain.GetEngineStatusUseCase
-import com.thoughtworks.carapp.domain.GetGearUseCase
 import com.thoughtworks.carapp.domain.GetParkingBreakStatusUseCase
+import com.thoughtworks.carapp.domain.SetDoorLockStatusUseCase
+import com.thoughtworks.carapp.domain.GetDoorLockStatusUseCase
+import com.thoughtworks.carapp.domain.GetDoorRearStatusUseCase
+import com.thoughtworks.carapp.domain.GetGearUseCase
+import com.thoughtworks.carapp.domain.CarLightUseCase
+import com.thoughtworks.carapp.domain.SetDoorRearStatusUseCase
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,10 +26,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed interface MainScreenEvent : Event {
-    object SwitchAutoHoldModeEvent : MainScreenEvent
+    object SwitchAutoHoldEvent : MainScreenEvent
     object EngineClickedEvent : MainScreenEvent
     object SwitchParkingBreakEvent : MainScreenEvent
-
+    object SwitchDoorLockEvent : MainScreenEvent
+    object SwitchDoorRearEvent : MainScreenEvent
     object HazardLightEvent : MainScreenEvent
     object HeadLightEvent : MainScreenEvent
     object HighBeamLightEvent : MainScreenEvent
@@ -36,8 +41,12 @@ class MainViewModel @Inject constructor(
     getAutoHoldStatus: GetAutoHoldStatusUseCase,
     getEngineStatus: GetEngineStatusUseCase,
     getParkingBreakStatus: GetParkingBreakStatusUseCase,
+    getDoorLockStatus: GetDoorLockStatusUseCase,
+    getDoorRearStatus: GetDoorRearStatusUseCase,
     getGearUseCase: GetGearUseCase,
     private val carLightUseCase: CarLightUseCase,
+    private val setDoorLockStatus: SetDoorLockStatusUseCase,
+    private val setDoorRearStatus: SetDoorRearStatusUseCase
 ) : BaseViewModel() {
     val isAutoHoldOn: StateFlow<Boolean> = getAutoHoldStatus().stateWith(false)
     val isEngineStart: StateFlow<Boolean> = getEngineStatus().stateWith(false)
@@ -45,8 +54,10 @@ class MainViewModel @Inject constructor(
     val isHazardLightOn = carLightUseCase.hazardLightFlow().stateWith(false)
     val isHeadLightOn = carLightUseCase.headLightFlow().stateWith(false)
     val isHighBeamLightOn = carLightUseCase.highBeamLightFlow().stateWith(false)
-
     val isParking = getGearUseCase().stateWith(true)
+    val isDoorLockOn = getDoorLockStatus().stateWith(true)
+    val isDoorRearOn = getDoorRearStatus().stateWith(true)
+
     val clockText = MutableStateFlow("")
 
     init {
@@ -66,7 +77,7 @@ class MainViewModel @Inject constructor(
 
     override fun handleEvents(event: Event) {
         when (event) {
-            MainScreenEvent.SwitchAutoHoldModeEvent -> {
+            MainScreenEvent.SwitchAutoHoldEvent -> {
                 Log.i(MainViewModel::class.simpleName, "Change Auto mode")
             }
             MainScreenEvent.EngineClickedEvent -> {
@@ -78,6 +89,14 @@ class MainViewModel @Inject constructor(
             }
             MainScreenEvent.SwitchParkingBreakEvent -> {
                 Log.i(MainViewModel::class.simpleName, "Change Parking Break mode")
+            }
+            MainScreenEvent.SwitchDoorLockEvent -> {
+                Log.i(MainViewModel::class.simpleName, "Change Door Lock mode")
+                setDoorLockStatus(isDoorLockOn.value.not())
+            }
+            MainScreenEvent.SwitchDoorRearEvent -> {
+                Log.i(MainViewModel::class.simpleName, "Change Door Rear mode")
+                setDoorRearStatus(isDoorRearOn.value.not())
             }
             MainScreenEvent.HazardLightEvent -> {
                 if (isHazardLightOn.value) {

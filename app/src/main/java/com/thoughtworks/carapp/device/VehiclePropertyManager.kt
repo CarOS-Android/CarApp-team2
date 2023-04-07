@@ -44,4 +44,8 @@ class VehiclePropertyManager @Inject constructor(
     fun setBooleanProperty(propId: Int, areaId: Int, value: Boolean) {
         carPropertyManager.setBooleanProperty(propId, areaId, value)
     }
+
+    fun setIntProperty(propId: Int, areaId: Int, value: Int) {
+        carPropertyManager.setIntProperty(propId, areaId, value)
+    }
 }
