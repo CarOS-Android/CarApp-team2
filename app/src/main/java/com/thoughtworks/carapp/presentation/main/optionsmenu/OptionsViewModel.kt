@@ -2,8 +2,8 @@ package com.thoughtworks.carapp.presentation.main.optionsmenu
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.thoughtworks.carapp.domain.GetWindowLockStatusUseCase
-import com.thoughtworks.carapp.domain.SetWindowLockStatusUseCase
+import com.thoughtworks.carapp.domain.windowlock.GetWindowLockStatusUseCase
+import com.thoughtworks.carapp.domain.windowlock.SetWindowLockStatusUseCase
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
 import dagger.hilt.android.lifecycle.HiltViewModel

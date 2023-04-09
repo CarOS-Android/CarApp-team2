@@ -8,11 +8,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetGearUseCase @Inject constructor(private val vehiclePropertyManager: VehiclePropertyManager) {
+class GetGearUseCase @Inject constructor(
+    private val vehiclePropertyManager: VehiclePropertyManager
+) {
     operator fun invoke(): Flow<Boolean> {
         return vehiclePropertyManager.getPropertyFlow(
-            VehiclePropertyIds.CURRENT_GEAR,
+            VehiclePropertyIds.GEAR_SELECTION,
             CarPropertyManager.SENSOR_RATE_ONCHANGE
-        ).map { it?.value as Int }.map { it == VehicleGear.GEAR_PARK }
+        )
+            .map { it?.value as Int }
+            .map { it == VehicleGear.GEAR_PARK }
     }
 }

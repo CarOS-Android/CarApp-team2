@@ -1,14 +1,17 @@
 package com.thoughtworks.carapp.presentation.main
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.thoughtworks.carapp.R
-
 
 @Composable
 fun AcBox(modifier: Modifier = Modifier) {
@@ -26,31 +29,24 @@ fun AcBox(modifier: Modifier = Modifier) {
             contentDescription = null
         )
 
-        LazyRow(
+        Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(vertical = 14.dp),
+                .padding(vertical = 14.dp, horizontal = 24.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            item {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_ac_left),
-                    contentDescription = null
-                )
-            }
-            item {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_ac_volume),
-                    contentDescription = null
-                )
-            }
-            item {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_ac_right),
-                    contentDescription = null
-                )
-            }
+            Image(
+                painter = painterResource(id = R.drawable.ic_ac_left),
+                contentDescription = null
+            )
+            Image(
+                painter = painterResource(id = R.drawable.ic_ac_volume),
+                contentDescription = null
+            )
+            Image(
+                painter = painterResource(id = R.drawable.ic_ac_right),
+                contentDescription = null
+            )
         }
     }
-
 }

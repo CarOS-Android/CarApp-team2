@@ -1,8 +1,8 @@
-package com.thoughtworks.carapp.domain
+package com.thoughtworks.carapp.domain.doorrear
 
+import android.car.VehicleAreaDoor
 import android.car.VehiclePropertyIds
 import android.car.hardware.property.CarPropertyManager
-import com.thoughtworks.carapp.device.VehicleAreaDoor
 import com.thoughtworks.carapp.device.VehiclePropertyManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
@@ -18,6 +18,6 @@ class GetDoorRearStatusUseCase @Inject constructor(
             CarPropertyManager.SENSOR_RATE_ONCHANGE
         )
             .filter { it?.areaId == VehicleAreaDoor.DOOR_REAR }
-            .map { it?.value as Int == 0 }
+            .map { it?.value as Int == DoorRearStatus.CLOSE }
     }
 }

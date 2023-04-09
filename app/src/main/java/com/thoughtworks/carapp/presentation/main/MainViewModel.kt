@@ -3,15 +3,15 @@ package com.thoughtworks.carapp.presentation.main
 import android.text.format.DateFormat
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.thoughtworks.carapp.domain.GetAutoHoldStatusUseCase
-import com.thoughtworks.carapp.domain.GetEngineStatusUseCase
-import com.thoughtworks.carapp.domain.GetParkingBreakStatusUseCase
-import com.thoughtworks.carapp.domain.SetDoorLockStatusUseCase
-import com.thoughtworks.carapp.domain.GetDoorLockStatusUseCase
-import com.thoughtworks.carapp.domain.GetDoorRearStatusUseCase
-import com.thoughtworks.carapp.domain.GetGearUseCase
 import com.thoughtworks.carapp.domain.CarLightUseCase
-import com.thoughtworks.carapp.domain.SetDoorRearStatusUseCase
+import com.thoughtworks.carapp.domain.GetEngineStatusUseCase
+import com.thoughtworks.carapp.domain.GetGearUseCase
+import com.thoughtworks.carapp.domain.GetParkingBreakStatusUseCase
+import com.thoughtworks.carapp.domain.autohold.GetAutoHoldStatusUseCase
+import com.thoughtworks.carapp.domain.doorlock.GetDoorLockStatusUseCase
+import com.thoughtworks.carapp.domain.doorlock.SetDoorLockStatusUseCase
+import com.thoughtworks.carapp.domain.doorrear.GetDoorRearStatusUseCase
+import com.thoughtworks.carapp.domain.doorrear.SetDoorRearStatusUseCase
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,7 +56,7 @@ class MainViewModel @Inject constructor(
     val isHighBeamLightOn = carLightUseCase.highBeamLightFlow().stateWith(false)
     val isParking = getGearUseCase().stateWith(true)
     val isDoorLockOn = getDoorLockStatus().stateWith(true)
-    val isDoorRearOn = getDoorRearStatus().stateWith(true)
+    val isDoorRearLocked = getDoorRearStatus().stateWith(true)
 
     val clockText = MutableStateFlow("")
 
@@ -96,7 +96,7 @@ class MainViewModel @Inject constructor(
             }
             MainScreenEvent.SwitchDoorRearEvent -> {
                 Log.i(MainViewModel::class.simpleName, "Change Door Rear mode")
-                setDoorRearStatus(isDoorRearOn.value.not())
+                setDoorRearStatus(isDoorRearLocked.value.not())
             }
             MainScreenEvent.HazardLightEvent -> {
                 if (isHazardLightOn.value) {

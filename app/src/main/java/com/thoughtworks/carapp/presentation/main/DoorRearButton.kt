@@ -22,21 +22,13 @@ fun DoorRearButton(
         onClick = onSwitch,
         modifier = modifier
             .background(
-                color = if (isLocked) {
-                    LightGray
-                } else {
-                    LightBlue
-                },
+                color = if (isLocked) LightGray else LightBlue,
                 shape = CircleShape
             )
     ) {
         Icon(
             painter = painterResource(
-                id = if (isLocked) {
-                    R.drawable.ic_door_lock
-                } else {
-                    R.drawable.ic_door_unlock
-                }
+                id = if (isLocked) R.drawable.ic_door_lock else R.drawable.ic_door_unlock
             ),
             contentDescription = null,
             tint = Color.Unspecified

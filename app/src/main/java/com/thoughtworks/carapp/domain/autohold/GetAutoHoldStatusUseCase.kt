@@ -1,4 +1,4 @@
-package com.thoughtworks.carapp.domain
+package com.thoughtworks.carapp.domain.autohold
 
 import android.car.VehiclePropertyIds
 import android.car.hardware.property.CarPropertyManager

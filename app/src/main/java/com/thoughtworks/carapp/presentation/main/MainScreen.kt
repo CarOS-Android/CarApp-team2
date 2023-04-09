@@ -1,7 +1,16 @@
 package com.thoughtworks.carapp.presentation.main
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,7 +31,7 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
     val isAutoHoldOn by viewModel.isAutoHoldOn.collectAsState()
     val isParkingBreakOn by viewModel.isParkingBreakOn.collectAsState()
     val isDoorLockOn by viewModel.isDoorLockOn.collectAsState()
-    val isDoorRearOn by viewModel.isDoorRearOn.collectAsState()
+    val isDoorRearLocked by viewModel.isDoorRearLocked.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         AcBox(
@@ -55,12 +64,12 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             modifier = Modifier
                 .padding(top = 86.dp, end = 80.dp, bottom = 90.dp)
                 .width(690.dp)
-                .align(Alignment.CenterEnd)
+                .fillMaxHeight()
+                .align(Alignment.CenterEnd),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
             NavigationMap()
-            Spacer(modifier = Modifier.height(32.dp))
             MusicPlay()
-            Spacer(modifier = Modifier.height(32.dp))
             OptionsList()
         }
 
@@ -85,7 +94,7 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                 .align(Alignment.TopStart)
                 .padding(start = 725.dp, top = 302.dp)
                 .size(16.8.dp, 22.4.dp),
-            isDoorRearOn
+            isDoorRearLocked
         ) {
             viewModel.sendEvent(MainScreenEvent.SwitchDoorRearEvent)
         }

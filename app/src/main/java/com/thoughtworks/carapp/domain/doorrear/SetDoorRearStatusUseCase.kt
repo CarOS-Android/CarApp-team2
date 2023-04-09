@@ -1,7 +1,7 @@
-package com.thoughtworks.carapp.domain
+package com.thoughtworks.carapp.domain.doorrear
 
+import android.car.VehicleAreaDoor
 import android.car.VehiclePropertyIds
-import com.thoughtworks.carapp.device.VehicleAreaDoor
 import com.thoughtworks.carapp.device.VehiclePropertyManager
 import javax.inject.Inject
 
@@ -9,10 +9,10 @@ class SetDoorRearStatusUseCase @Inject constructor(
     private val vehiclePropertyManager: VehiclePropertyManager
 ) {
     operator fun invoke(value: Boolean) {
-        vehiclePropertyManager.setIntProperty(
-            propId = VehiclePropertyIds.DOOR_POS,
-            areaId = VehicleAreaDoor.DOOR_REAR,
-            value = if (value) 0 else 1
+        vehiclePropertyManager.setProperty(
+            VehiclePropertyIds.DOOR_POS,
+            VehicleAreaDoor.DOOR_REAR,
+            if (value) DoorRearStatus.CLOSE else DoorRearStatus.OPEN
         )
     }
 }
