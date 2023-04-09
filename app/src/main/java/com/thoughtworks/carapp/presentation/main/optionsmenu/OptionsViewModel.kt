@@ -1,18 +1,15 @@
 package com.thoughtworks.carapp.presentation.main.optionsmenu
 
 import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.thoughtworks.carapp.domain.windowlock.GetWindowLockStatusUseCase
 import com.thoughtworks.carapp.domain.windowlock.SetWindowLockStatusUseCase
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 sealed interface OptionsEvent : Event {
@@ -28,14 +25,10 @@ data class OptionsUiState(
 class OptionsViewModel @Inject constructor(
     getWindowLockStatus: GetWindowLockStatusUseCase,
     private val setWindowLockStatus: SetWindowLockStatusUseCase,
-) : BaseViewModel() {
+) : BaseViewModel<OptionsEvent>() {
     private val _windowLockUiState: StateFlow<OptionState> = getWindowLockStatus()
         .map { OptionState(Option.WINDOW_LOCK, isActive = it, isEnable = true) }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = OptionState(Option.WINDOW_LOCK, isActive = false, isEnable = true)
-        )
+        .stateWith(OptionState(Option.WINDOW_LOCK, isActive = false, isEnable = true))
 
     private val _fragranceUiState: MutableStateFlow<OptionState> = MutableStateFlow(OptionState(Option.FRAGRANCE))
     private val _wifiUiState: MutableStateFlow<OptionState> = MutableStateFlow(OptionState(Option.WI_FI))
@@ -46,13 +39,9 @@ class OptionsViewModel @Inject constructor(
         _windowLockUiState, _fragranceUiState, _wifiUiState, _bluetoothUiState, _cellularUiState
     ) { windowLock, fragrance, wifi, bluetooth, cellular ->
         OptionsUiState(listOf(windowLock, fragrance, wifi, bluetooth, cellular))
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = OptionsUiState()
-    )
+    }.stateWith(OptionsUiState())
 
-    override fun handleEvents(event: Event) {
+    override fun handleEvents(event: OptionsEvent) {
         when (event) {
             is OptionsEvent.PerformOptionClick -> onOptionClicked(event.option)
         }

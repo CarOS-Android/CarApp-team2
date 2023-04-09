@@ -1,4 +1,4 @@
-package com.thoughtworks.carapp.presentation.main
+package com.thoughtworks.carapp.presentation.main.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalIndication
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.thoughtworks.carapp.R
 
 @Composable
-fun ParkingBreakButton(
+fun AutoHoldButton(
     isOpened: Boolean,
     onSwitch: () -> Unit = {}
 ) {
@@ -39,14 +39,16 @@ fun ParkingBreakButton(
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_parking_break_background),
+            painter = painterResource(id = R.drawable.ic_auto_hold_background),
             contentDescription = ""
         )
+
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
-                painter = painterResource(id = R.drawable.ic_parking_break),
+                painter = painterResource(id = R.drawable.ic_auto_hold_text),
                 contentDescription = ""
             )
+
             Spacer(modifier = Modifier.height(15.dp))
             Image(
                 painter = painterResource(

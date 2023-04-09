@@ -1,4 +1,4 @@
-package com.thoughtworks.carapp.presentation.main
+package com.thoughtworks.carapp.presentation.main.carlights
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,10 +19,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.carapp.R
 
 @Composable
-fun CarLightUI(viewModel: MainViewModel) {
+fun CarLightUI(viewModel: CarLightViewModel = viewModel()) {
     val isHazardLightOn by viewModel.isHazardLightOn.collectAsState()
     val isHeadLightOn by viewModel.isHeadLightOn.collectAsState()
     val isHighBeamLightOn by viewModel.isHighBeamLightOn.collectAsState()
@@ -49,7 +50,7 @@ fun CarLightUI(viewModel: MainViewModel) {
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
                 ) {
-                    viewModel.sendEvent(MainScreenEvent.HazardLightEvent)
+                    viewModel.sendEvent(CarLightEvent.HazardLightEvent)
                 },
             painter = if (isHazardLightOn) {
                 painterResource(id = R.drawable.ic_hazard_light_on)
@@ -72,7 +73,7 @@ fun CarLightUI(viewModel: MainViewModel) {
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
                 ) {
-                    viewModel.sendEvent(MainScreenEvent.HeadLightEvent)
+                    viewModel.sendEvent(CarLightEvent.HeadLightEvent)
                 },
             painter = if (!isHighBeamLightOn && isHeadLightOn) {
                 painterResource(id = R.drawable.ic_head_light_on)
@@ -94,7 +95,7 @@ fun CarLightUI(viewModel: MainViewModel) {
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
                 ) {
-                    viewModel.sendEvent(MainScreenEvent.HighBeamLightEvent)
+                    viewModel.sendEvent(CarLightEvent.HighBeamLightEvent)
                 },
             painter = if (isHighBeamLightOn) {
                 painterResource(id = R.drawable.ic_high_beam_light_on)

@@ -1,4 +1,4 @@
-package com.thoughtworks.carapp.presentation.main
+package com.thoughtworks.carapp.presentation.main.hvac
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

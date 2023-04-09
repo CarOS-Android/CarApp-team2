@@ -1,4 +1,4 @@
-package com.thoughtworks.carapp.presentation.main
+package com.thoughtworks.carapp.presentation.main.doors
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

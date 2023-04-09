@@ -1,6 +1,7 @@
-package com.thoughtworks.carapp.presentation.main
+package com.thoughtworks.carapp.presentation.main.doors
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -8,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.thoughtworks.carapp.R
 import com.thoughtworks.carapp.presentation.theme.LightBlue
 import com.thoughtworks.carapp.presentation.theme.LightGray
@@ -21,6 +23,7 @@ fun DoorRearButton(
     IconButton(
         onClick = onSwitch,
         modifier = modifier
+            .size(50.dp)
             .background(
                 color = if (isLocked) LightGray else LightBlue,
                 shape = CircleShape

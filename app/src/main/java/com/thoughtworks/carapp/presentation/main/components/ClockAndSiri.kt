@@ -1,11 +1,9 @@
-package com.thoughtworks.carapp.presentation.main
+package com.thoughtworks.carapp.presentation.main.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
@@ -15,8 +13,7 @@ import com.thoughtworks.carapp.R
 import com.thoughtworks.carapp.presentation.theme.WhiteGrey
 
 @Composable
-fun ClockAndSiri(viewModel: MainViewModel) {
-    val clockText by viewModel.clockText.collectAsState()
+fun ClockAndSiri(clockText: String) {
     Text(
         modifier = Modifier
             .layoutId("clock")
