@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -23,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.blindhmi.ui.composable.border
 import com.thoughtworks.blindhmi.ui.composable.center
@@ -59,7 +61,7 @@ fun AcBox(modifier: Modifier = Modifier, viewModel: AcViewModel = viewModel()) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 TemperatureButton(viewModel, leftTemperature, AcTemperatureUseCase.LEFT)
                 Spacer(modifier = Modifier.height(5.dp))
-                Text(text = "主驾", color = Color.White)
+                Text(text = "主驾", color = Color.White, fontSize = 18.sp)
             }
 
             Image(
@@ -71,7 +73,7 @@ fun AcBox(modifier: Modifier = Modifier, viewModel: AcViewModel = viewModel()) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 TemperatureButton(viewModel, rightTemperature, AcTemperatureUseCase.RIGHT)
                 Spacer(modifier = Modifier.height(5.dp))
-                Text(text = "副驾", color = Color.White)
+                Text(text = "副驾", color = Color.White, fontSize = 18.sp)
             }
         }
     }
@@ -83,9 +85,15 @@ fun TemperatureButton(viewModel: AcViewModel, currentTemperature: Int, side: Int
     val context = LocalContext.current
     val centerTextView = remember {
         TextView(context).apply {
-            setTextColor(android.graphics.Color.BLACK)
+            textSize = 36.px.toFloat()
+            setTextColor(android.graphics.Color.parseColor("#4E505E"))
         }
     }
+
+    LaunchedEffect(key1 = currentTemperature, block = {
+        centerTextView.text = "$currentTemperature°"
+    })
+
     ComposeBlindHMILoopStepper(
         modifier = Modifier.size(144.dp),
         centerBackgroundRadius = 72.dp,
@@ -108,9 +116,7 @@ fun TemperatureButton(viewModel: AcViewModel, currentTemperature: Int, side: Int
             center(context) {
                 drawOrder = getDrawOrder() + 2
                 contentViewFactory = {
-                    centerTextView.apply {
-                        text = "$currentTemperature°"
-                    }
+                    centerTextView
                 }
             }
         },
