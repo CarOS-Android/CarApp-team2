@@ -27,6 +27,7 @@ import com.thoughtworks.carapp.presentation.main.components.AutoHoldButton
 import com.thoughtworks.carapp.presentation.main.components.ClockAndSiri
 import com.thoughtworks.carapp.presentation.main.components.EngineButton
 import com.thoughtworks.carapp.presentation.main.components.ParkingBreakButton
+import com.thoughtworks.carapp.presentation.main.components.VolumeButton
 import com.thoughtworks.carapp.presentation.main.doors.DoorsController
 import com.thoughtworks.carapp.presentation.main.hvac.AcBox
 import com.thoughtworks.carapp.presentation.main.optionsmenu.OptionsList
@@ -64,6 +65,7 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
         ConstraintLayout(createClockAndSiriConstraints()) {
             ClockAndSiri(clockText)
             EngineButton(isEngineOn) { viewModel.sendEvent(MainScreenEvent.EngineClickedEvent) }
+            VolumeButton()
         }
 
         Column(
@@ -91,6 +93,7 @@ private fun createClockAndSiriConstraints(): ConstraintSet {
 
         val clock = createRefFor("clock")
         val siri = createRefFor("siri")
+        val volume = createRefFor("volume")
         val engine = createRefFor("engine")
 
         constrain(clock) {
@@ -102,6 +105,11 @@ private fun createClockAndSiriConstraints(): ConstraintSet {
             top.linkTo(topGuideLine)
             bottom.linkTo(topGuideLine)
             start.linkTo(clock.end)
+        }
+        constrain(volume) {
+            top.linkTo(topGuideLine)
+            bottom.linkTo(topGuideLine)
+            start.linkTo(siri.end)
         }
         constrain(engine) {
             top.linkTo(topGuideLine)
