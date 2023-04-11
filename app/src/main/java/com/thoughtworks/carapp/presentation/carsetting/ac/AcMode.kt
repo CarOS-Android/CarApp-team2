@@ -2,9 +2,7 @@ package com.thoughtworks.carapp.presentation.carsetting.ac
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,9 +20,21 @@ import com.thoughtworks.carapp.presentation.theme.LightBlue
 fun AcMode(viewModel: AcViewModel = viewModel()) {
     val isAcPowerOn by viewModel.isAcPowerOn.collectAsState()
     val isAcAutoOn by viewModel.isAcAutoOn.collectAsState()
+    val isAcOn by viewModel.isAcOn.collectAsState()
 
-    AcPowerButton(isAcPowerOn = isAcPowerOn) {
-        viewModel.sendEvent(SettingScreenEvent.SwitchAcPowerEvent)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 166.dp, start = 72.dp)
+    ) {
+        AcButton(status = isAcPowerOn, iconId = R.drawable.ic_ac_button) {
+            viewModel.sendEvent(SettingScreenEvent.SwitchAcPowerEvent)
+        }
+        Spacer(modifier = Modifier.height(50.dp))
+
+        AcButton(status = isAcPowerOn && isAcOn, iconId = R.drawable.ic_ac_text) {
+            viewModel.sendEvent(SettingScreenEvent.SwitchAcOnEvent)
+        }
     }
     AcAutoButton(isAcAutoOn = isAcAutoOn) {
         viewModel.sendEvent(SettingScreenEvent.SwitchAcAutoEvent)
@@ -32,13 +42,15 @@ fun AcMode(viewModel: AcViewModel = viewModel()) {
 }
 
 @Composable
-private fun AcPowerButton(
-    isAcPowerOn: Boolean,
+private fun AcButton(
+    modifier: Modifier = Modifier,
+    iconId: Int,
+    status: Boolean,
     onClick: () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .padding(top = 166.dp, start = 72.dp)
+        modifier = modifier
+            .size(width = 75.dp, height = 75.dp)
             .clickable(
                 onClick = onClick
             )
@@ -46,7 +58,7 @@ private fun AcPowerButton(
         contentAlignment = Alignment.Center
 
     ) {
-        val bgColor = if (isAcPowerOn) LightBlue else DarkGray
+        val bgColor = if (status) LightBlue else DarkGray
         Icon(
             painter = painterResource(id = R.drawable.ic_ac_bg),
             contentDescription = null,
@@ -54,7 +66,7 @@ private fun AcPowerButton(
         )
 
         Image(
-            painter = painterResource(id = R.drawable.ic_ac_button),
+            painter = painterResource(id = iconId),
             contentDescription = null
         )
     }
