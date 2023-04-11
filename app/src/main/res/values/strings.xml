@@ -7,4 +7,9 @@
     <string name="option_wi_fi">Wi-Fi</string>
     <string name="option_bluetooth">Bluetooth</string>
     <string name="option_cellular">Cellular</string>
+
+    <!--  MainScreen HVAC Controller  -->
+    <string name="hvac_fan_speed">风量</string>
+    <string name="hvac_ac_temperature_left">主驾</string>
+    <string name="hvac_ac_temperature_right">副驾</string>
 </resources>
