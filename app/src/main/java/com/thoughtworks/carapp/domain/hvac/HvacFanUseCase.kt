@@ -14,7 +14,7 @@ class HvacFanUseCase @Inject constructor(
     fun setFanSpeed(speed: Int) {
         vehiclePropertyManager.setProperty(
             VehiclePropertyIds.HVAC_FAN_SPEED,
-            SupportedHvacAreas.ALL,
+            HvacAreas.ALL,
             speed
         )
     }

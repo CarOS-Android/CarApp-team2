@@ -2,7 +2,7 @@ package com.thoughtworks.carapp.domain.hvac
 
 import android.car.VehicleAreaSeat
 
-object SupportedHvacAreas {
+object HvacAreas {
 
     const val LEFT = VehicleAreaSeat.SEAT_ROW_1_LEFT or
         VehicleAreaSeat.SEAT_ROW_2_LEFT or

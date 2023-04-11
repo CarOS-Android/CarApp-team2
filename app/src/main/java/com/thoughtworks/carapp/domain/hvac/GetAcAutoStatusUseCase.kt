@@ -1,4 +1,4 @@
-package com.thoughtworks.carapp.domain.acmode
+package com.thoughtworks.carapp.domain.hvac
 
 import android.car.VehiclePropertyIds
 import android.car.hardware.property.CarPropertyManager
@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetAcPowerStatusUseCase @Inject constructor(
+class GetAcAutoStatusUseCase @Inject constructor(
     private val vehiclePropertyManager: VehiclePropertyManager
 ) {
     operator fun invoke(): Flow<Boolean> {
         return vehiclePropertyManager.getPropertyFlow(
-            VehiclePropertyIds.HVAC_AC_ON,
+            VehiclePropertyIds.HVAC_AUTO_ON,
             CarPropertyManager.SENSOR_RATE_ONCHANGE
         )
             .map { it?.value as Boolean }

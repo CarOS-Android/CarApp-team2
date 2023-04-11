@@ -13,19 +13,19 @@ class AcTemperatureUseCase @Inject constructor(
     private val vehiclePropertyManager: VehiclePropertyManager
 ) {
     fun getCurrentLeftTemperature(): Int {
-        return getCurrentTemperature(SupportedHvacAreas.LEFT)
+        return getCurrentTemperature(HvacAreas.LEFT)
     }
 
     fun getCurrentRightTemperature(): Int {
-        return getCurrentTemperature(SupportedHvacAreas.RIGHT)
+        return getCurrentTemperature(HvacAreas.RIGHT)
     }
 
     fun leftTemperatureFlow(): Flow<Int> {
-        return temperatureFlow(SupportedHvacAreas.LEFT).map { it.toInt() }
+        return temperatureFlow(HvacAreas.LEFT).map { it.toInt() }
     }
 
     fun rightTemperatureFlow(): Flow<Int> {
-        return temperatureFlow(SupportedHvacAreas.RIGHT).map { it.toInt() }
+        return temperatureFlow(HvacAreas.RIGHT).map { it.toInt() }
     }
 
     private fun temperatureFlow(side: Int): Flow<Float> {
@@ -42,7 +42,7 @@ class AcTemperatureUseCase @Inject constructor(
     fun setRightTemperature(temperature: Int) {
         vehiclePropertyManager.setProperty(
             VehiclePropertyIds.HVAC_TEMPERATURE_SET,
-            SupportedHvacAreas.RIGHT,
+            HvacAreas.RIGHT,
             temperature.toFloat()
         )
     }
@@ -50,7 +50,7 @@ class AcTemperatureUseCase @Inject constructor(
     fun setLeftTemperature(temperature: Int) {
         vehiclePropertyManager.setProperty(
             VehiclePropertyIds.HVAC_TEMPERATURE_SET,
-            SupportedHvacAreas.LEFT,
+            HvacAreas.LEFT,
             temperature.toFloat()
         )
     }
