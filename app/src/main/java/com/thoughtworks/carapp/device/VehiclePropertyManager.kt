@@ -17,6 +17,10 @@ class VehiclePropertyManager @Inject constructor(
         carPropertyManager.setProperty(T::class.java, propId, areaId, state)
     }
 
+    inline fun <reified T> getProperty(propId: Int, areaId: Int): T {
+        return carPropertyManager.getProperty(T::class.java, propId, areaId).value
+    }
+
     fun getPropertyFlow(propId: Int, rate: Float): Flow<CarPropertyValue<*>?> = callbackFlow {
         val propertyCallback = object : CarPropertyManager.CarPropertyEventCallback {
             override fun onChangeEvent(value: CarPropertyValue<*>?) {
