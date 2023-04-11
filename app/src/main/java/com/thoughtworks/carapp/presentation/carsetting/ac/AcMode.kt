@@ -21,9 +21,13 @@ import com.thoughtworks.carapp.presentation.theme.LightBlue
 @Composable
 fun AcMode(viewModel: AcViewModel = viewModel()) {
     val isAcPowerOn by viewModel.isAcPowerOn.collectAsState()
+    val isAcAutoOn by viewModel.isAcAutoOn.collectAsState()
 
     AcPowerButton(isAcPowerOn = isAcPowerOn) {
         viewModel.sendEvent(SettingScreenEvent.SwitchAcPowerEvent)
+    }
+    AcAutoButton(isAcAutoOn = isAcAutoOn) {
+        viewModel.sendEvent(SettingScreenEvent.SwitchAcAutoEvent)
     }
 }
 
@@ -51,6 +55,33 @@ private fun AcPowerButton(
 
         Image(
             painter = painterResource(id = R.drawable.ic_ac_button),
+            contentDescription = null
+        )
+    }
+}
+
+@Composable
+private fun AcAutoButton(
+    isAcAutoOn: Boolean,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .padding(top = 362.dp, start = 72.dp)
+            .clickable(
+                onClick = onClick
+            )
+            .wrapContentSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        val bgColor = if (isAcAutoOn) LightBlue else DarkGray
+        Icon(
+            painter = painterResource(id = R.drawable.ic_ac_bg),
+            contentDescription = null,
+            tint = bgColor
+        )
+        Image(
+            painter = painterResource(id = R.drawable.ic_ac_auto),
             contentDescription = null
         )
     }
