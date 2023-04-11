@@ -30,7 +30,6 @@ class HvacFanUseCase @Inject constructor(
                 FanSpeed.values().find { it.value == speed }
                     ?: when {
                         speed > FanSpeed.SPEED_MAX.value -> FanSpeed.SPEED_MAX
-                        speed < FanSpeed.SPEED_MIN.value -> FanSpeed.SPEED_MIN
                         else -> FanSpeed.OFF
                     }
             }

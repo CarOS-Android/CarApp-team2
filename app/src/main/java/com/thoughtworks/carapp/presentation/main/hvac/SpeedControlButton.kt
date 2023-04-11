@@ -65,9 +65,9 @@ fun SpeedControlButton(
                 contentFactory = {
                     Image(
                         painter = painterResource(
-                            when(currentFanSpeed) {
+                            when (currentFanSpeed) {
                                 FanSpeed.OFF -> R.drawable.ic_hvac_fan_speed_center_state_off
-                                FanSpeed.SPEED_MIN -> R.drawable.ic_hvac_fan_speed_center_1
+                                FanSpeed.SPEED_1 -> R.drawable.ic_hvac_fan_speed_center_1
                                 FanSpeed.SPEED_2 -> R.drawable.ic_hvac_fan_speed_center_2
                                 FanSpeed.SPEED_3 -> R.drawable.ic_hvac_fan_speed_center_3
                                 FanSpeed.SPEED_MAX -> R.drawable.ic_hvac_fan_speed_center_4
