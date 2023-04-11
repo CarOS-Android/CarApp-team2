@@ -5,12 +5,6 @@ import android.car.VehiclePropertyIds
 import com.thoughtworks.carapp.device.VehiclePropertyManager
 import javax.inject.Inject
 
-private const val LEFT =
-    VehicleAreaSeat.SEAT_ROW_1_LEFT or VehicleAreaSeat.SEAT_ROW_2_LEFT or VehicleAreaSeat.SEAT_ROW_2_CENTER
-private const val RIGHT = VehicleAreaSeat.SEAT_ROW_1_RIGHT or VehicleAreaSeat.SEAT_ROW_2_RIGHT
-
-private const val ALL = LEFT or RIGHT
-
 class SetAcPowerStatusUseCase @Inject constructor(
     private val vehiclePropertyManager: VehiclePropertyManager
 ) {
@@ -20,5 +14,15 @@ class SetAcPowerStatusUseCase @Inject constructor(
             ALL,
             value
         )
+    }
+
+    companion object {
+        private const val LEFT =
+            VehicleAreaSeat.SEAT_ROW_1_LEFT or VehicleAreaSeat.SEAT_ROW_2_LEFT or VehicleAreaSeat.SEAT_ROW_2_CENTER
+
+        private const val RIGHT =
+            VehicleAreaSeat.SEAT_ROW_1_RIGHT or VehicleAreaSeat.SEAT_ROW_2_RIGHT
+
+        private const val ALL = LEFT or RIGHT
     }
 }

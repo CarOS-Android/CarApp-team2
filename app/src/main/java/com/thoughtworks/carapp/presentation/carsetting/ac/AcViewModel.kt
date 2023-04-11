@@ -1,4 +1,4 @@
-package com.thoughtworks.carapp.presentation.carsetting
+package com.thoughtworks.carapp.presentation.carsetting.ac
 
 import com.thoughtworks.carapp.domain.acmode.GetAcPowerStatusUseCase
 import com.thoughtworks.carapp.domain.acmode.SetAcPowerStatusUseCase
@@ -13,7 +13,7 @@ sealed interface SettingScreenEvent : Event {
 }
 
 @HiltViewModel
-class SettingViewModel @Inject constructor(
+class AcViewModel @Inject constructor(
     getAcPowerStatus: GetAcPowerStatusUseCase,
     private val setAcPowerStatus: SetAcPowerStatusUseCase,
 ) : BaseViewModel<SettingScreenEvent>() {
