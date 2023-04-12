@@ -39,12 +39,22 @@ fun AcMode(viewModel: AcViewModel = viewModel()) {
         }
         Spacer(modifier = Modifier.height(50.dp))
 
-        AcButton(status = isAcPowerOn && isAcOn, isEnable = isAcPowerOn, iconId = R.drawable.ic_ac_text) {
+        AcButton(
+            status = isAcPowerOn && isAcOn,
+            isEnable = isAcPowerOn,
+            iconId = R.drawable.ic_ac_text
+        ) {
             viewModel.sendEvent(SettingScreenEvent.SwitchAcOnEvent)
         }
-    }
-    AcAutoButton(isAcAutoOn = isAcAutoOn) {
-        viewModel.sendEvent(SettingScreenEvent.SwitchAcAutoEvent)
+        Spacer(modifier = Modifier.height(50.dp))
+
+        AcButton(
+            status = isAcPowerOn && isAcAutoOn,
+            isEnable = isAcPowerOn,
+            iconId = R.drawable.ic_ac_auto
+        ) {
+            viewModel.sendEvent(SettingScreenEvent.SwitchAcAutoEvent)
+        }
     }
 }
 
@@ -58,7 +68,7 @@ private fun AcButton(
 ) {
     Box(
         modifier = modifier
-            .size(width = 75.dp, height = 75.dp)
+            .size(width = 80.dp, height = 80.dp)
             .clickable(enabled = isEnable, onClick = onClick)
             .wrapContentSize(),
         contentAlignment = Alignment.Center
@@ -73,33 +83,6 @@ private fun AcButton(
 
         Image(
             painter = painterResource(id = iconId),
-            contentDescription = null
-        )
-    }
-}
-
-@Composable
-private fun AcAutoButton(
-    isAcAutoOn: Boolean,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .padding(top = 362.dp, start = 72.dp)
-            .clickable(
-                onClick = onClick
-            )
-            .wrapContentSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        val bgColor = if (isAcAutoOn) LightBlue else DarkGray
-        Icon(
-            painter = painterResource(id = R.drawable.ic_ac_bg),
-            contentDescription = null,
-            tint = bgColor
-        )
-        Image(
-            painter = painterResource(id = R.drawable.ic_ac_auto),
             contentDescription = null
         )
     }

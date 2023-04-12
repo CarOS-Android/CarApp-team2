@@ -12,7 +12,7 @@ class AcPowerStatusUseCase @Inject constructor(
 ) {
     fun getAcPowerStatusFlow(): Flow<Boolean> {
         return vehiclePropertyManager.getPropertyFlow(
-            VehiclePropertyIds.HVAC_AC_ON,
+            VehiclePropertyIds.HVAC_POWER_ON,
             CarPropertyManager.SENSOR_RATE_ONCHANGE
         )
             .map { it?.value as Boolean }
@@ -20,7 +20,7 @@ class AcPowerStatusUseCase @Inject constructor(
 
     fun setAcPowerStatus(value: Boolean) {
         vehiclePropertyManager.setProperty(
-            VehiclePropertyIds.HVAC_AC_ON,
+            VehiclePropertyIds.HVAC_POWER_ON,
             HvacAreas.ALL,
             value
         )
