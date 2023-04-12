@@ -7,20 +7,20 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class AcPowerStatusUseCase @Inject constructor(
+class AcOnStatusUseCase @Inject constructor(
     private val vehiclePropertyManager: VehiclePropertyManager
 ) {
-    fun getAcPowerStatusFlow(): Flow<Boolean> {
+    fun getAcOnStatusFlow(): Flow<Boolean> {
         return vehiclePropertyManager.getPropertyFlow(
-            VehiclePropertyIds.HVAC_POWER_ON,
+            VehiclePropertyIds.HVAC_AC_ON,
             CarPropertyManager.SENSOR_RATE_ONCHANGE
         )
             .map { it?.value as Boolean }
     }
 
-    fun setAcPowerStatus(value: Boolean) {
+    fun setAcOnStatus(value: Boolean) {
         vehiclePropertyManager.setProperty(
-            VehiclePropertyIds.HVAC_POWER_ON,
+            VehiclePropertyIds.HVAC_AC_ON,
             HvacAreas.ALL,
             value
         )

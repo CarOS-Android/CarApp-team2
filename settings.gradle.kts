@@ -50,7 +50,7 @@ pluginManagement {
     }
 
     val buildLogicPath = createBuildLogicPath()
-    initBuildLogic(buildLogicPath)
+//    initBuildLogic(buildLogicPath)
     includeBuild(buildLogicPath)
 
     repositories {
