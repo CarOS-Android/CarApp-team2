@@ -60,7 +60,7 @@ androidApplication {
 }
 
 dependencies {
-    implementation(files("${rootProject.projectDir}/libs/car-lib-debug.aar"))
+    implementation("com.thoughtworks.automotive.team2:carlib:1.0.0")
     implementation("com.thoughtworks.blindhmi:ui:1.0.6")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
