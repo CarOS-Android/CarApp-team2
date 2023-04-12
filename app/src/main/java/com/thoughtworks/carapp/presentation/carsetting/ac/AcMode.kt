@@ -4,12 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -39,7 +39,7 @@ fun AcMode(viewModel: AcViewModel = viewModel()) {
         }
         Spacer(modifier = Modifier.height(50.dp))
 
-        AcButton(status = isAcOn, isEnable = isAcPowerOn, iconId = R.drawable.ic_ac_text) {
+        AcButton(status = isAcPowerOn && isAcOn, isEnable = isAcPowerOn, iconId = R.drawable.ic_ac_text) {
             viewModel.sendEvent(SettingScreenEvent.SwitchAcOnEvent)
         }
     }
