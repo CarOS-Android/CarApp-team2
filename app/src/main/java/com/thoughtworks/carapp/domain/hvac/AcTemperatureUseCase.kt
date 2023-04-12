@@ -1,6 +1,5 @@
-package com.thoughtworks.carapp.domain
+package com.thoughtworks.carapp.domain.hvac
 
-import android.car.VehicleAreaSeat
 import android.car.VehiclePropertyIds
 import android.car.hardware.property.CarPropertyManager
 import com.thoughtworks.carapp.device.VehiclePropertyManager
@@ -14,19 +13,19 @@ class AcTemperatureUseCase @Inject constructor(
     private val vehiclePropertyManager: VehiclePropertyManager
 ) {
     fun getCurrentLeftTemperature(): Int {
-        return getCurrentTemperature(LEFT)
+        return getCurrentTemperature(HvacAreas.LEFT)
     }
 
     fun getCurrentRightTemperature(): Int {
-        return getCurrentTemperature(RIGHT)
+        return getCurrentTemperature(HvacAreas.RIGHT)
     }
 
     fun leftTemperatureFlow(): Flow<Int> {
-        return temperatureFlow(LEFT).map { it.toInt() }
+        return temperatureFlow(HvacAreas.LEFT).map { it.toInt() }
     }
 
     fun rightTemperatureFlow(): Flow<Int> {
-        return temperatureFlow(RIGHT).map { it.toInt() }
+        return temperatureFlow(HvacAreas.RIGHT).map { it.toInt() }
     }
 
     private fun temperatureFlow(side: Int): Flow<Float> {
@@ -40,18 +39,19 @@ class AcTemperatureUseCase @Inject constructor(
         return vehiclePropertyManager.getProperty<Float>(VehiclePropertyIds.HVAC_TEMPERATURE_SET, side).toInt()
     }
 
-    fun setCurrentTemperature(side: Int, temperature: Int) {
+    fun setRightTemperature(temperature: Int) {
         vehiclePropertyManager.setProperty(
             VehiclePropertyIds.HVAC_TEMPERATURE_SET,
-            side,
+            HvacAreas.RIGHT,
             temperature.toFloat()
         )
     }
 
-    companion object {
-        const val LEFT = VehicleAreaSeat.SEAT_ROW_1_LEFT or
-            VehicleAreaSeat.SEAT_ROW_2_LEFT or
-            VehicleAreaSeat.SEAT_ROW_2_CENTER
-        const val RIGHT = VehicleAreaSeat.SEAT_ROW_1_RIGHT or VehicleAreaSeat.SEAT_ROW_2_RIGHT
+    fun setLeftTemperature(temperature: Int) {
+        vehiclePropertyManager.setProperty(
+            VehiclePropertyIds.HVAC_TEMPERATURE_SET,
+            HvacAreas.LEFT,
+            temperature.toFloat()
+        )
     }
 }

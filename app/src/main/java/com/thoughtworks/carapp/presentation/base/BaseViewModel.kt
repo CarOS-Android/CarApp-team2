@@ -39,7 +39,7 @@ abstract class BaseViewModel<E : Event> : ViewModel() {
         )
     }
 
-    abstract fun handleEvents(event: E)
+    protected abstract fun handleEvents(event: E)
 
     companion object {
         private const val STOP_TIME_OUT = 5000L
