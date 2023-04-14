@@ -5,11 +5,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.blindhmi.ui.component.item.Item
 import com.thoughtworks.blindhmi.ui.composable.center
 import com.thoughtworks.blindhmi.ui.composable.checkbox.ComposeBlindHMICheckBoxGroup
@@ -21,7 +24,8 @@ private const val WHOLE_ANGLE = 360f
 private const val OPTION_ITEM_LAYOUT_SPAN = 32f
 
 @Composable
-fun HvacOptionsMenu() {
+fun HvacOptionsMenu(viewModel: HvacOptionsViewModel = viewModel()) {
+    val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val indicatorRadiusPx = with(LocalDensity.current) { 60.dp.roundToPx() }
 
@@ -53,8 +57,9 @@ fun HvacOptionsMenu() {
             }
         },
         items = createItems(context),
+        checkStateList = uiState,
         onItemSelected = {
-            it.getLabel()
+            viewModel.sendEvent(HvacOptionsEvent.OnHvacOptionSelected(it.getLabel()))
         }
     )
 }

@@ -61,7 +61,7 @@ androidApplication {
 
 dependencies {
     implementation("com.thoughtworks.automotive.team2:carlib:1.0.0")
-    implementation("com.thoughtworks.blindhmi:ui:1.0.8")
+    implementation("com.thoughtworks.blindhmi:ui:1.0.9")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     implementation(libs.bundles.kotlin)
