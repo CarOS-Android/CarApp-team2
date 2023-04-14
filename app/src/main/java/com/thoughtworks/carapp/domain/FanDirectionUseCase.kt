@@ -23,17 +23,17 @@ class FanDirectionUseCase @Inject constructor(
             VehiclePropertyIds.HVAC_FAN_DIRECTION, HvacAreas.ALL, value
         )
     }
+
     fun fanFlow(): Flow<Int> {
         return vehiclePropertyManager.getPropertyFlow(
             VehiclePropertyIds.HVAC_FAN_DIRECTION,
             CarPropertyManager.SENSOR_RATE_ONCHANGE,
         ).filterNotNull().map { it.value as Int }.map { direction ->
             when (direction) {
-                VehicleHvacFanDirection.FACE -> 1
-                VehicleHvacFanDirection.FLOOR -> 2
-                else -> 3
+                VehicleHvacFanDirection.FACE -> VehicleHvacFanDirection.FACE
+                VehicleHvacFanDirection.FLOOR -> VehicleHvacFanDirection.FLOOR
+                else -> VehicleHvacFanDirection.DEFROST - 1
             }
         }
     }
 }
-

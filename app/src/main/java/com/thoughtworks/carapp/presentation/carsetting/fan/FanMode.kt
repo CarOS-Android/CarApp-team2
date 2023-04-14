@@ -2,10 +2,14 @@ package com.thoughtworks.carapp.presentation.carsetting.fan
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,13 +26,12 @@ import com.thoughtworks.blindhmi.ui.composable.indicator
 import com.thoughtworks.blindhmi.ui.composable.stepper.ComposeBlindHMILoopStepper
 import com.thoughtworks.blindhmi.ui.utils.DimensionUtils.px
 import com.thoughtworks.carapp.R
-
 import com.thoughtworks.carapp.presentation.theme.LightBlue
 
 @Composable
-
 fun FanMode(
-    modifier: Modifier = Modifier, viewModel: FanViewModel = viewModel()
+    modifier: Modifier = Modifier,
+    viewModel: FanViewModel = viewModel()
 ) {
     Box(
         modifier = modifier
@@ -36,9 +39,7 @@ fun FanMode(
             .size(width = 105.dp, height = 110.dp)
     ) {
         val fanDirection by viewModel.fanDirection.collectAsState()
-
         FanButton(fanDirection) { viewModel.sendEvent(FanEvent.SetFanDirection(it)) }
-
         Text(
             text = "$fanDirection",
             color = Color.White,
@@ -55,10 +56,14 @@ fun FanMode(
 
 @Composable
 fun FanButton(
-    fanDirection: Int, onSweep: (Int) -> Unit
+    fanDirection: Int,
+    onSweep: (Int) -> Unit
 ) {
     val context = LocalContext.current
-    ComposeBlindHMILoopStepper(modifier = Modifier.size(104.dp),
+    ComposeBlindHMILoopStepper(
+        modifier = Modifier.size(
+            104.dp
+        ),
         centerBackgroundRadius = 44.dp,
         centerBackgroundRes = R.drawable.fan_bg,
         border = {
@@ -81,7 +86,8 @@ fun FanButton(
                     Image(
                         painter = painterResource(
                             R.drawable.fan_icon
-                        ), contentDescription = ""
+                        ),
+                        contentDescription = ""
                     )
                 }
                 drawOrder = getDrawOrder() + 2
@@ -93,8 +99,9 @@ fun FanButton(
         steps = 12,
         stepValue = 1f,
         onSweepStep = { _, stepperValue ->
-            onSweep(stepperValue.toInt())
-        })
+            onSweep(
+                stepperValue.toInt()
+            )
+        }
+    )
 }
-
-

@@ -1,8 +1,6 @@
 package com.thoughtworks.carapp.presentation.carsetting.fan
-
 import android.car.VehicleHvacFanDirection
 import com.thoughtworks.carapp.domain.FanDirectionUseCase
-
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
