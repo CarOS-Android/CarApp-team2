@@ -1,7 +1,6 @@
 package com.thoughtworks.carapp.presentation.carsetting.fragrance
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.blindhmi.ui.component.item.Item
 import com.thoughtworks.blindhmi.ui.composable.ItemDsl
 import com.thoughtworks.blindhmi.ui.composable.border
@@ -34,7 +35,14 @@ import com.thoughtworks.carapp.R
 private const val WHOLE_ANGLE = 360f
 
 @Composable
-fun FragranceController(modifier: Modifier) {
+fun FragranceController(
+    modifier: Modifier = Modifier,
+    viewModel: FragranceViewModel = viewModel()
+) {
+    val driverState by viewModel.driverState.collectAsState()
+    val copilotState by viewModel.copilotState.collectAsState()
+    val backSeatState by viewModel.backSeatState.collectAsState()
+
     Box(
         modifier = modifier
             .padding(top = 120.dp, end = 98.dp)
@@ -49,30 +57,23 @@ fun FragranceController(modifier: Modifier) {
             contentDescription = "",
             modifier = Modifier.padding(top = 86.dp, start = 68.dp)
         )
-        FragranceButtonGroups(Modifier.align(Alignment.TopEnd))
-    }
-}
 
-@Composable
-private fun FragranceButtonGroups(modifier: Modifier) {
-    var driverState by remember { mutableStateOf(FragranceOptions.SECRET) }
-    var copilotState by remember { mutableStateOf(FragranceOptions.SUNSHINE) }
-    var backSeatState by remember { mutableStateOf(FragranceOptions.STAR) }
-
-    Column(modifier = modifier.padding(top = 30.dp)) {
-        FragranceButton(driverState) { item ->
-            Log.i("ComposeBlindHMIRadioGroup", "driverState: ${item.getLabel()}")
-            FragranceOptions.getOptionByName(item.getLabel())?.let { driverState = it }
-        }
-        Spacer(modifier = Modifier.height(24.dp))
-        FragranceButton(copilotState) { item ->
-            Log.i("ComposeBlindHMIRadioGroup", "copilotState: ${item.getLabel()}")
-            FragranceOptions.getOptionByName(item.getLabel())?.let { copilotState = it }
-        }
-        Spacer(modifier = Modifier.height(24.dp))
-        FragranceButton(backSeatState) { item ->
-            Log.i("ComposeBlindHMIRadioGroup", "backSeatState: ${item.getLabel()}")
-            FragranceOptions.getOptionByName(item.getLabel())?.let { backSeatState = it }
+        Column(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(top = 30.dp)
+        ) {
+            FragranceButton(driverState) {
+                viewModel.sendEvent(FragranceEvent.DriverFragranceEvent(it.getLabel()))
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+            FragranceButton(copilotState) {
+                viewModel.sendEvent(FragranceEvent.CopilotFragranceEvent(it.getLabel()))
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+            FragranceButton(backSeatState) {
+                viewModel.sendEvent(FragranceEvent.BackSeatFragranceEvent(it.getLabel()))
+            }
         }
     }
 }
