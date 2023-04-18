@@ -2,4 +2,8 @@
 <resources>
 
     <dimen name="fragrance_option_item_size">50dp</dimen>
+
+    <!--  HVAC Option menu  -->
+    <dimen name="hvac_option_menu_item_size">28dp</dimen>
+
 </resources>

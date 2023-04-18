@@ -8,12 +8,14 @@ import androidx.compose.ui.Modifier
 import com.thoughtworks.carapp.presentation.carsetting.ac.AcMode
 import com.thoughtworks.carapp.presentation.carsetting.fan.FanMode
 import com.thoughtworks.carapp.presentation.carsetting.fragrance.FragranceController
+import com.thoughtworks.carapp.presentation.carsetting.hvacoptions.HvacOptionsMenu
 import com.thoughtworks.carapp.presentation.main.seats.SeatController
 
 @Composable
 fun CarSettingScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
         AcMode()
+        HvacOptionsMenu()
         SeatController()
         FanMode()
         FragranceController(Modifier.align(Alignment.TopEnd))
