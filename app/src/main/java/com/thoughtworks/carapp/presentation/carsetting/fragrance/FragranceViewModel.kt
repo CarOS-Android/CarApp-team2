@@ -1,10 +1,9 @@
 package com.thoughtworks.carapp.presentation.carsetting.fragrance
 
-import android.util.Log
+import com.thoughtworks.carapp.domain.fragrance.FragranceUseCase
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.emptyFlow
 import javax.inject.Inject
 
 sealed interface FragranceEvent : Event {
@@ -14,13 +13,15 @@ sealed interface FragranceEvent : Event {
 }
 
 @HiltViewModel
-class FragranceViewModel @Inject constructor() : BaseViewModel<FragranceEvent>() {
-    val driverState = emptyFlow<FragranceOptions>()
+class FragranceViewModel @Inject constructor(
+    private val fragranceUseCase: FragranceUseCase
+) : BaseViewModel<FragranceEvent>() {
+    val driverState = fragranceUseCase.getDriverAreaStatus()
         .stateWith(FragranceOptions.SECRET)
-    val copilotState = emptyFlow<FragranceOptions>()
-        .stateWith(FragranceOptions.STAR)
-    val backSeatState = emptyFlow<FragranceOptions>()
-        .stateWith(FragranceOptions.SUNSHINE)
+    val copilotState = fragranceUseCase.getCopilotAreaStatus()
+        .stateWith(FragranceOptions.SECRET)
+    val backSeatState = fragranceUseCase.getBackSeatAreaStatus()
+        .stateWith(FragranceOptions.SECRET)
 
     override fun handleEvents(event: FragranceEvent) {
         when (event) {
@@ -32,16 +33,16 @@ class FragranceViewModel @Inject constructor() : BaseViewModel<FragranceEvent>()
 
     private fun handleDriverFragranceEvent(label: String) {
         val selectedOption = FragranceOptions.getOptionByName(label)
-        Log.i("FragranceViewModel", "handleDriverFragranceEvent: $selectedOption")
+        fragranceUseCase.setDriverStatus(selectedOption)
     }
 
     private fun handleCopilotFragranceEvent(label: String) {
         val selectedOption = FragranceOptions.getOptionByName(label)
-        Log.i("FragranceViewModel", "handleCopilotFragranceEvent: $selectedOption")
+        fragranceUseCase.setCopilotStatus(selectedOption)
     }
 
     private fun handleBackSeatFragranceEvent(label: String) {
         val selectedOption = FragranceOptions.getOptionByName(label)
-        Log.i("FragranceViewModel", "handleBackSeatFragranceEvent: $selectedOption")
+        fragranceUseCase.setBackSeatStatus(selectedOption)
     }
 }

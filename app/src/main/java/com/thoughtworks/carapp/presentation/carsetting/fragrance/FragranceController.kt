@@ -127,9 +127,9 @@ private fun FragranceButton(currentSelection: FragranceOptions, onItemSelected: 
 
 private fun createItems(context: Context): List<Item> {
     val itemsList = mutableListOf<Item>()
-    val angleEachItem = WHOLE_ANGLE / FragranceOptions.values().size
+    val angleEachItem = WHOLE_ANGLE / FragranceOptions.optionList.size
     val startAngle = angleEachItem / 2
-    FragranceOptions.values().forEachIndexed { index, fragrance ->
+    FragranceOptions.optionList.forEachIndexed { index, fragrance ->
         val item = item(context) {
             imageRes = fragrance.imgRes
             angle = startAngle + index * angleEachItem

@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.blindhmi.ui.component.item.Item
+import com.thoughtworks.blindhmi.ui.composable.ItemDsl
 import com.thoughtworks.blindhmi.ui.composable.center
 import com.thoughtworks.blindhmi.ui.composable.checkbox.ComposeBlindHMICheckBoxGroup
 import com.thoughtworks.blindhmi.ui.composable.indicator
@@ -76,6 +77,7 @@ private fun createItems(context: Context): List<Item> {
             label = option.name
             size = context.resources.getDimensionPixelSize(R.dimen.hvac_option_menu_item_size)
             checked = false
+            itemType = ItemDsl.ItemType.CHECK_BOX
         }
         itemsList.add(item)
     }
