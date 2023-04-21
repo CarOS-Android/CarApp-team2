@@ -10,8 +10,9 @@ enum class FragranceOptions(@DrawableRes val imgRes: Int) {
     SECRET(R.drawable.ic_fragrance_option_secret);
 
     companion object {
-        fun getOptionByName(name: String): FragranceOptions = values().find { it.name == name } ?: CLOSED
 
         val optionList = listOf(STAR, SUNSHINE, SECRET)
+
+        fun getOptionByName(name: String): FragranceOptions = values().find { it.name == name } ?: CLOSED
     }
 }

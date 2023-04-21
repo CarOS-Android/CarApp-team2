@@ -1,5 +1,6 @@
 package com.thoughtworks.carapp.domain.fragrance
 
+import android.car.FragranceState
 import android.car.VehicleAreaSeat
 import android.car.VehiclePropertyIds
 import android.car.hardware.property.CarPropertyManager
@@ -34,9 +35,9 @@ class FragranceUseCase @Inject constructor(
         .map { it.value as Int }
         .map { status ->
             when (status) {
-                1 -> FragranceOptions.SECRET
-                2 -> FragranceOptions.STAR
-                3 -> FragranceOptions.SUNSHINE
+                FragranceState.SECRET -> FragranceOptions.SECRET
+                FragranceState.STAR -> FragranceOptions.STAR
+                FragranceState.SUNSHINE -> FragranceOptions.SUNSHINE
                 else -> FragranceOptions.CLOSED
             }
         }
@@ -58,15 +59,11 @@ class FragranceUseCase @Inject constructor(
         areaId: Int
     ) {
         val value = when (option) {
-            FragranceOptions.STAR -> 2
-            FragranceOptions.SUNSHINE -> 3
-            FragranceOptions.SECRET -> 1
-            FragranceOptions.CLOSED -> 0
+            FragranceOptions.CLOSED -> FragranceState.CLOSED
+            FragranceOptions.SECRET -> FragranceState.SECRET
+            FragranceOptions.STAR -> FragranceState.STAR
+            FragranceOptions.SUNSHINE -> FragranceState.SUNSHINE
         }
-        vehiclePropertyManager.setProperty(
-            VehiclePropertyIds.HVAC_FRAGRANCE,
-            areaId,
-            value
-        )
+        vehiclePropertyManager.setProperty(VehiclePropertyIds.HVAC_FRAGRANCE, areaId, value)
     }
 }
