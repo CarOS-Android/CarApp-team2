@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import com.thoughtworks.carapp.R
 import com.thoughtworks.carapp.presentation.theme.DarkGray
 import com.thoughtworks.carapp.presentation.theme.LightBlack
+import com.thoughtworks.carapp.presentation.theme.LightBlue
+import com.thoughtworks.carapp.presentation.theme.LightRed
 import com.thoughtworks.carapp.presentation.theme.MiddleGray
 
 @Composable
@@ -35,12 +37,46 @@ fun SeatHeatingButton(
     heatValue: Int,
     onSwitch: () -> Unit = {}
 ) {
+    val imgRes = if (heatValue == 0) {
+        R.drawable.ic_seat_heating_off
+    } else {
+        R.drawable.ic_seat_heating_on
+    }
+    val activatedColor = LightRed
+    val text = "Seat Heating"
+
+    SeatButton(heatValue, onSwitch, imgRes, activatedColor, text)
+}
+@Composable
+fun SeatVentilationButton(
+    ventilationValue: Int,
+    onSwitch: () -> Unit
+) {
+    val imgRes = if (ventilationValue == 0) {
+        R.drawable.ic_seat_ventilation_closed
+    } else {
+        R.drawable.ic_seat_ventilation_activated
+    }
+    val activatedColor = LightBlue
+    val text = "Seat Ventilation"
+
+    SeatButton(ventilationValue, onSwitch, imgRes, activatedColor, text)
+}
+
+@Composable
+private fun SeatButton(
+    value: Int,
+    onSwitch: () -> Unit,
+    imgRes: Int,
+    activatedColor: Color,
+    text: String
+) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(18.dp))
             .size(width = 110.dp, height = 96.dp)
             .background(
-                color = if (heatValue == 0) DarkGray else MiddleGray,
+                color = if (value == 0) DarkGray else MiddleGray,
                 shape = RoundedCornerShape(18.dp)
             )
             .clickable(
@@ -53,13 +89,7 @@ fun SeatHeatingButton(
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
-                painter = painterResource(
-                    id = if (heatValue == 0) {
-                        R.drawable.ic_seat_heating_off
-                    } else {
-                        R.drawable.ic_seat_heating_on
-                    }
-                ),
+                painter = painterResource(id = imgRes),
                 contentDescription = null
             )
 
@@ -67,19 +97,19 @@ fun SeatHeatingButton(
                 Image(
                     painter = painterResource(id = R.drawable.ic_seat_status_item),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(if (heatValue >= 1) Color.Red else LightBlack)
+                    colorFilter = ColorFilter.tint(if (value >= 1) activatedColor else LightBlack)
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Image(
                     painter = painterResource(id = R.drawable.ic_seat_status_item),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(if (heatValue == 2) Color.Red else LightBlack)
+                    colorFilter = ColorFilter.tint(if (value == 2) activatedColor else LightBlack)
                 )
             }
 
             Spacer(modifier = Modifier.height(6.dp))
 
-            Text(text = "Seat Heating", modifier = Modifier, color = Color.White, fontSize = 10.sp)
+            Text(text = text, modifier = Modifier, color = Color.White, fontSize = 10.sp)
         }
     }
 }
