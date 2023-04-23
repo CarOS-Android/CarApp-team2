@@ -29,7 +29,6 @@ import com.thoughtworks.blindhmi.ui.composable.stepper.ComposeBlindHMILoopSteppe
 import com.thoughtworks.blindhmi.ui.utils.DimensionUtils.px
 import com.thoughtworks.carapp.R
 import com.thoughtworks.carapp.domain.FanDirection
-import com.thoughtworks.carapp.presentation.carsetting.ac.AcViewModel
 import com.thoughtworks.carapp.presentation.carsetting.disabled
 import com.thoughtworks.carapp.presentation.carsetting.gesturesDisabled
 import com.thoughtworks.carapp.presentation.theme.LightBlue
@@ -37,17 +36,15 @@ import com.thoughtworks.carapp.presentation.theme.LightBlue
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun FanDirectionMode(
-    acViewModel: AcViewModel = viewModel(),
+    isAcPowerOn: Boolean,
+    isAcAutoOn: Boolean,
     viewModel: FanViewModel = viewModel()
 ) {
-    val isAcPowerOn by acViewModel.isAcPowerOn.collectAsState()
-    val isAcAutoOn by acViewModel.isAcAutoOn.collectAsState()
-
     val disabled = if (!isAcPowerOn) true else isAcAutoOn
 
     Box(
         modifier = Modifier
-            .padding(top = 390.dp, start = 420.dp)
+            .padding(top = 447.dp, start = 413.dp)
             .size(width = 105.dp, height = 110.dp)
             .disabled(disabled)
     ) {

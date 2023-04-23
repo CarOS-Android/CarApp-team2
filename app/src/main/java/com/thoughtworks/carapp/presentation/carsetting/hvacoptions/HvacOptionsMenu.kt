@@ -22,7 +22,6 @@ import com.thoughtworks.blindhmi.ui.composable.checkbox.ComposeBlindHMICheckBoxG
 import com.thoughtworks.blindhmi.ui.composable.indicator
 import com.thoughtworks.blindhmi.ui.composable.item
 import com.thoughtworks.carapp.R
-import com.thoughtworks.carapp.presentation.carsetting.ac.AcViewModel
 import com.thoughtworks.carapp.presentation.carsetting.disabled
 import com.thoughtworks.carapp.presentation.carsetting.gesturesDisabled
 
@@ -32,15 +31,13 @@ private const val OPTION_ITEM_LAYOUT_SPAN = 32f
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun HvacOptionsMenu(
-    acViewModel: AcViewModel = viewModel(),
+    isAcPowerOn: Boolean,
+    isAcAutoOn: Boolean,
     viewModel: HvacOptionsViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val indicatorRadiusPx = with(LocalDensity.current) { 60.dp.roundToPx() }
-
-    val isAcPowerOn by acViewModel.isAcPowerOn.collectAsState()
-    val isAcAutoOn by acViewModel.isAcAutoOn.collectAsState()
 
     val disabled = if (!isAcPowerOn) true else isAcAutoOn
 
