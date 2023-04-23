@@ -8,43 +8,64 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.carapp.R
+import com.thoughtworks.carapp.domain.model.SeatFuncGear
+import com.thoughtworks.carapp.presentation.theme.MiddleDarkGray
 
 @Composable
 fun SeatController(viewModel: SeatViewModel = viewModel()) {
     val driverHeatStatus by viewModel.driverSeatHeatStatus.collectAsState()
     val copilotHeatStatus by viewModel.copilotSeatHeatStatus.collectAsState()
+    val driverVentilationStatus by viewModel.driverSeatVentilationStatus.collectAsState()
+    val copilotVentilationStatus by viewModel.copilotSeatVentilationStatus.collectAsState()
 
     Row(modifier = Modifier.padding(start = 73.dp, top = 709.dp)) {
         val driverTitle = "主驾"
         val copilotTitle = "副驾"
-        SeatPanel(driverTitle, driverHeatStatus) {
-            viewModel.sendEvent(SeatEvent.SwitchDriverSeatHeatingEvent)
-        }
+        SeatPanel(
+            driverTitle = driverTitle,
+            driverHeatStatus = driverHeatStatus,
+            driverVentilationStatus = driverVentilationStatus,
+            onDriverHeatSwitch = { viewModel.sendEvent(SeatEvent.SwitchDriverSeatHeatingEvent) },
+            onDriverVentilationSwitch = { viewModel.sendEvent(SeatEvent.SwitchDriverVentilationEvent) }
+        )
         Spacer(modifier = Modifier.width(40.dp))
-        SeatPanel(copilotTitle, copilotHeatStatus) {
-            viewModel.sendEvent(SeatEvent.SwitchCopilotSeatHeatingEvent)
-        }
+        SeatPanel(
+            driverTitle = copilotTitle,
+            driverHeatStatus = copilotHeatStatus,
+            driverVentilationStatus = copilotVentilationStatus,
+            onDriverHeatSwitch = { viewModel.sendEvent(SeatEvent.SwitchCopilotSeatHeatingEvent) },
+            onDriverVentilationSwitch = { viewModel.sendEvent(SeatEvent.SwitchCopilotVentilationEvent) }
+        )
     }
 }
 
 @Composable
-private fun SeatPanel(driverTitle: String, driverHeatStatus: Int, onDriverSwitch: () -> Unit) {
+private fun SeatPanel(
+    driverTitle: String,
+    driverHeatStatus: SeatFuncGear,
+    driverVentilationStatus: SeatFuncGear,
+    onDriverHeatSwitch: () -> Unit,
+    onDriverVentilationSwitch: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .size(width = 605.dp, height = 283.dp)
-            .background(color = Color.DarkGray)
+            .clip(RoundedCornerShape(16.dp))
+            .background(color = MiddleDarkGray)
     ) {
         Column(
             modifier = Modifier.padding(start = 44.dp, top = 60.dp),
@@ -56,7 +77,9 @@ private fun SeatPanel(driverTitle: String, driverHeatStatus: Int, onDriverSwitch
         Spacer(modifier = Modifier.width(54.dp))
 
         Row(modifier = Modifier.padding(top = 32.dp)) {
-            SeatHeatingButton(driverHeatStatus, onDriverSwitch)
+            SeatHeatingButton(driverHeatStatus.value, onDriverHeatSwitch)
+            Spacer(modifier = Modifier.width(30.dp))
+            SeatVentilationButton(driverVentilationStatus.value, onDriverVentilationSwitch)
         }
     }
 }

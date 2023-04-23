@@ -15,9 +15,11 @@ val Red400 = Color(0xFFEF5350)
 val Yellow400 = Color(0xFFFFEE58)
 
 val LightBlue = Color(0xFF25BEFA)
+val LightRed = Color(0xFFCF597C)
 
 val LightGray = Color(0xFF606060)
 val MiddleGray = Color(0xFF292929)
+val MiddleDarkGray = Color(0xFF161616)
 val DarkGray = Color(0xFF1E1E1E)
 
 val WhiteGrey = Color(0xFFF1F3F5)
