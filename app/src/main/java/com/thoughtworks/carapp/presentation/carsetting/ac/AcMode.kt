@@ -1,5 +1,6 @@
 package com.thoughtworks.carapp.presentation.carsetting.ac
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,11 +20,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thoughtworks.carapp.R
-import com.thoughtworks.carapp.presentation.theme.DarkGray
-import com.thoughtworks.carapp.presentation.theme.LightBlue
+
+private const val DISABLED_STATUS_ALPHA = 0.4f
 
 @Composable
-fun AcMode(viewModel: AcViewModel = viewModel()) {
+fun AcMode(
+    viewModel: AcViewModel = viewModel(),
+    isFragranceOn: Boolean,
+    onFragranceButtonClick: () -> Unit
+) {
     val isAcPowerOn by viewModel.isAcPowerOn.collectAsState()
     val isAcAutoOn by viewModel.isAcAutoOn.collectAsState()
     val isAcOn by viewModel.isAcOn.collectAsState()
@@ -34,56 +38,58 @@ fun AcMode(viewModel: AcViewModel = viewModel()) {
             .fillMaxSize()
             .padding(top = 166.dp, start = 72.dp)
     ) {
-        AcButton(status = isAcPowerOn, isEnable = true, iconId = R.drawable.ic_ac_button) {
-            viewModel.sendEvent(SettingScreenEvent.SwitchAcPowerEvent)
-        }
-        Spacer(modifier = Modifier.height(50.dp))
+        AcButton(
+            isActivated = isAcPowerOn,
+            activatedRes = R.drawable.hvac_power_switch_activated,
+            closedRes = R.drawable.hvac_power_switch_closed,
+            isEnable = true
+        ) { viewModel.sendEvent(SettingScreenEvent.SwitchAcPowerEvent) }
+        Spacer(modifier = Modifier.height(48.dp))
 
         AcButton(
-            status = isAcPowerOn && isAcOn,
-            isEnable = isAcPowerOn,
-            iconId = R.drawable.ic_ac_text
-        ) {
-            viewModel.sendEvent(SettingScreenEvent.SwitchAcOnEvent)
-        }
-        Spacer(modifier = Modifier.height(50.dp))
+            isActivated = isAcOn,
+            activatedRes = R.drawable.hvac_ac_activated,
+            closedRes = R.drawable.hvac_ac_closed,
+            isEnable = isAcPowerOn && isAcAutoOn.not()
+        ) { viewModel.sendEvent(SettingScreenEvent.SwitchAcOnEvent) }
+        Spacer(modifier = Modifier.height(48.dp))
 
         AcButton(
-            status = isAcPowerOn && isAcAutoOn,
-            isEnable = isAcPowerOn,
-            iconId = R.drawable.ic_ac_auto
-        ) {
-            viewModel.sendEvent(SettingScreenEvent.SwitchAcAutoEvent)
-        }
+            isActivated = isAcAutoOn,
+            activatedRes = R.drawable.hvac_auto_activated,
+            closedRes = R.drawable.hvac_auto_closed,
+            isEnable = isAcPowerOn
+        ) { viewModel.sendEvent(SettingScreenEvent.SwitchAcAutoEvent) }
+        Spacer(modifier = Modifier.height(48.dp))
+
+        AcButton(
+            isActivated = isFragranceOn,
+            activatedRes = R.drawable.hvac_fragrance_activated,
+            closedRes = R.drawable.hvac_fragrance_closed,
+            isEnable = isAcPowerOn
+        ) { onFragranceButtonClick() }
     }
 }
 
 @Composable
 private fun AcButton(
-    modifier: Modifier = Modifier,
-    iconId: Int,
-    status: Boolean,
+    isActivated: Boolean,
+    @DrawableRes activatedRes: Int,
+    @DrawableRes closedRes: Int,
     isEnable: Boolean,
     onClick: () -> Unit
 ) {
     Box(
-        modifier = modifier
-            .size(width = 80.dp, height = 80.dp)
+        modifier = Modifier
+            .size(80.dp)
             .clickable(enabled = isEnable, onClick = onClick)
             .wrapContentSize(),
         contentAlignment = Alignment.Center
-
     ) {
-        val bgColor = if (status) LightBlue else DarkGray
-        Icon(
-            painter = painterResource(id = R.drawable.ic_ac_bg),
-            contentDescription = null,
-            tint = bgColor
-        )
-
         Image(
-            painter = painterResource(id = iconId),
-            contentDescription = null
+            painter = painterResource(id = if (isActivated) activatedRes else closedRes),
+            contentDescription = null,
+            alpha = if (isEnable) 1f else DISABLED_STATUS_ALPHA
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.thoughtworks.carapp.presentation.carsetting.fan
-import android.car.VehicleHvacFanDirection
+
+import com.thoughtworks.carapp.domain.FanDirection
 import com.thoughtworks.carapp.domain.FanDirectionUseCase
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
@@ -14,7 +15,9 @@ sealed interface FanEvent : Event {
 class FanViewModel @Inject constructor(
     private val fanDirectionUseCase: FanDirectionUseCase
 ) : BaseViewModel<FanEvent>() {
-    val fanDirection = fanDirectionUseCase.fanFlow().stateWith(VehicleHvacFanDirection.FACE)
+    val fanDirection = fanDirectionUseCase.getFanDirectionFlow()
+        .stateWith(FanDirection.FACE)
+
     override fun handleEvents(event: FanEvent) {
         when (event) {
             is FanEvent.SetFanDirection -> fanDirectionUseCase.setFanDirection(event.direction)

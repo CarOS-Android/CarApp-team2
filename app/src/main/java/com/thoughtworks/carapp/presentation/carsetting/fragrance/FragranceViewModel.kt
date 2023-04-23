@@ -10,6 +10,7 @@ sealed interface FragranceEvent : Event {
     data class DriverFragranceEvent(val fragranceLabel: String) : FragranceEvent
     data class CopilotFragranceEvent(val fragranceLabel: String) : FragranceEvent
     data class BackSeatFragranceEvent(val fragranceLabel: String) : FragranceEvent
+    object SetFragranceOpenStatus : FragranceEvent
 }
 
 @HiltViewModel
@@ -22,13 +23,19 @@ class FragranceViewModel @Inject constructor(
         .stateWith(FragranceOptions.SECRET)
     val backSeatState = fragranceUseCase.getBackSeatAreaStatus()
         .stateWith(FragranceOptions.SECRET)
+    val isFragranceOn = fragranceUseCase.fragranceOpenState
 
     override fun handleEvents(event: FragranceEvent) {
         when (event) {
             is FragranceEvent.BackSeatFragranceEvent -> handleBackSeatFragranceEvent(event.fragranceLabel)
             is FragranceEvent.CopilotFragranceEvent -> handleCopilotFragranceEvent(event.fragranceLabel)
             is FragranceEvent.DriverFragranceEvent -> handleDriverFragranceEvent(event.fragranceLabel)
+            FragranceEvent.SetFragranceOpenStatus -> updateFragranceOpenStatus()
         }
+    }
+
+    private fun updateFragranceOpenStatus() {
+        fragranceUseCase.setWholeAreaOpenStatus(isFragranceOn.value.not())
     }
 
     private fun handleDriverFragranceEvent(label: String) {

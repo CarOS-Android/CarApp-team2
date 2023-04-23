@@ -37,7 +37,7 @@ private const val WHOLE_ANGLE = 360f
 @Composable
 fun FragranceController(
     modifier: Modifier = Modifier,
-    viewModel: FragranceViewModel = viewModel()
+    viewModel: FragranceViewModel
 ) {
     val driverState by viewModel.driverState.collectAsState()
     val copilotState by viewModel.copilotState.collectAsState()
