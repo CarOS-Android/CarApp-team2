@@ -1,6 +1,8 @@
 package com.thoughtworks.carapp.presentation.carsetting.hvacoptions
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,20 +22,34 @@ import com.thoughtworks.blindhmi.ui.composable.checkbox.ComposeBlindHMICheckBoxG
 import com.thoughtworks.blindhmi.ui.composable.indicator
 import com.thoughtworks.blindhmi.ui.composable.item
 import com.thoughtworks.carapp.R
+import com.thoughtworks.carapp.presentation.carsetting.ac.AcViewModel
+import com.thoughtworks.carapp.presentation.carsetting.disabled
+import com.thoughtworks.carapp.presentation.carsetting.gesturesDisabled
 
 private const val WHOLE_ANGLE = 360f
 private const val OPTION_ITEM_LAYOUT_SPAN = 32f
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
-fun HvacOptionsMenu(viewModel: HvacOptionsViewModel = viewModel()) {
+fun HvacOptionsMenu(
+    acViewModel: AcViewModel = viewModel(),
+    viewModel: HvacOptionsViewModel = viewModel()
+) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val indicatorRadiusPx = with(LocalDensity.current) { 60.dp.roundToPx() }
 
+    val isAcPowerOn by acViewModel.isAcPowerOn.collectAsState()
+    val isAcAutoOn by acViewModel.isAcAutoOn.collectAsState()
+
+    val disabled = if (!isAcPowerOn) true else isAcAutoOn
+
     ComposeBlindHMICheckBoxGroup(
         modifier = Modifier
             .padding(top = 423.dp, start = 630.dp)
-            .size(width = 140.dp, height = 153.dp),
+            .size(width = 140.dp, height = 153.dp)
+            .disabled(disabled)
+            .gesturesDisabled(disabled),
         centerBackgroundRadius = 70.dp,
         centerBackgroundRes = R.drawable.ic_hvac_options_border,
         layoutRadius = 44.dp,

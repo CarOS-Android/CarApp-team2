@@ -1,5 +1,7 @@
 package com.thoughtworks.carapp.presentation.carsetting.fan
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -27,19 +29,30 @@ import com.thoughtworks.blindhmi.ui.composable.stepper.ComposeBlindHMILoopSteppe
 import com.thoughtworks.blindhmi.ui.utils.DimensionUtils.px
 import com.thoughtworks.carapp.R
 import com.thoughtworks.carapp.domain.FanDirection
+import com.thoughtworks.carapp.presentation.carsetting.ac.AcViewModel
+import com.thoughtworks.carapp.presentation.carsetting.disabled
+import com.thoughtworks.carapp.presentation.carsetting.gesturesDisabled
 import com.thoughtworks.carapp.presentation.theme.LightBlue
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun FanDirectionMode(
+    acViewModel: AcViewModel = viewModel(),
     viewModel: FanViewModel = viewModel()
 ) {
+    val isAcPowerOn by acViewModel.isAcPowerOn.collectAsState()
+    val isAcAutoOn by acViewModel.isAcAutoOn.collectAsState()
+
+    val disabled = if (!isAcPowerOn) true else isAcAutoOn
+
     Box(
         modifier = Modifier
             .padding(top = 390.dp, start = 420.dp)
             .size(width = 105.dp, height = 110.dp)
+            .disabled(disabled)
     ) {
         val fanDirection by viewModel.fanDirection.collectAsState()
-        FanDirectionButton(fanDirection) { viewModel.sendEvent(FanEvent.SetFanDirection(it)) }
+        FanDirectionButton(fanDirection, disabled) { viewModel.sendEvent(FanEvent.SetFanDirection(it)) }
         Text(
             text = fanDirection.text,
             color = Color.White,
@@ -57,11 +70,14 @@ fun FanDirectionMode(
 @Composable
 private fun FanDirectionButton(
     fanDirection: FanDirection,
+    disabled: Boolean,
     onSweep: (Int) -> Unit
 ) {
     val context = LocalContext.current
     ComposeBlindHMILoopStepper(
-        modifier = Modifier.size(104.dp),
+        modifier = Modifier
+            .size(104.dp)
+            .gesturesDisabled(disabled),
         centerBackgroundRadius = 44.dp,
         centerBackgroundRes = R.drawable.fan_bg,
         border = {

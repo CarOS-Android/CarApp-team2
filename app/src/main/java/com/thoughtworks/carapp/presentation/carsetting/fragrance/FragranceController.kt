@@ -1,6 +1,8 @@
 package com.thoughtworks.carapp.presentation.carsetting.fragrance
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,17 +33,27 @@ import com.thoughtworks.blindhmi.ui.composable.indicator
 import com.thoughtworks.blindhmi.ui.composable.item
 import com.thoughtworks.blindhmi.ui.composable.radio.ComposeBlindHMIRadioGroup
 import com.thoughtworks.carapp.R
+import com.thoughtworks.carapp.presentation.carsetting.ac.AcViewModel
+import com.thoughtworks.carapp.presentation.carsetting.disabled
+import com.thoughtworks.carapp.presentation.carsetting.gesturesDisabled
 
 private const val WHOLE_ANGLE = 360f
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun FragranceController(
     modifier: Modifier = Modifier,
-    viewModel: FragranceViewModel
+    viewModel: FragranceViewModel,
+    acViewModel: AcViewModel = viewModel()
 ) {
     val driverState by viewModel.driverState.collectAsState()
     val copilotState by viewModel.copilotState.collectAsState()
     val backSeatState by viewModel.backSeatState.collectAsState()
+
+    val isAcPowerOn by acViewModel.isAcPowerOn.collectAsState()
+    val isFragranceOn by viewModel.isFragranceOn.collectAsState()
+
+    val disabled = if (!isAcPowerOn) true else !isFragranceOn
 
     Box(
         modifier = modifier
@@ -63,23 +75,24 @@ fun FragranceController(
                 .align(Alignment.TopEnd)
                 .padding(top = 30.dp)
         ) {
-            FragranceButton(driverState) {
+            FragranceButton(disabled, driverState) {
                 viewModel.sendEvent(FragranceEvent.DriverFragranceEvent(it.getLabel()))
             }
             Spacer(modifier = Modifier.height(24.dp))
-            FragranceButton(copilotState) {
+            FragranceButton(disabled, copilotState) {
                 viewModel.sendEvent(FragranceEvent.CopilotFragranceEvent(it.getLabel()))
             }
             Spacer(modifier = Modifier.height(24.dp))
-            FragranceButton(backSeatState) {
+            FragranceButton(disabled, backSeatState) {
                 viewModel.sendEvent(FragranceEvent.BackSeatFragranceEvent(it.getLabel()))
             }
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
-private fun FragranceButton(currentSelection: FragranceOptions, onItemSelected: (Item) -> Unit) {
+private fun FragranceButton(disabled: Boolean, currentSelection: FragranceOptions, onItemSelected: (Item) -> Unit) {
     val context = LocalContext.current
     val borderRadiusPx = with(LocalDensity.current) { 72.dp.roundToPx() }
     val indicatorRadiusPx = with(LocalDensity.current) { 45.dp.roundToPx() }
@@ -88,7 +101,10 @@ private fun FragranceButton(currentSelection: FragranceOptions, onItemSelected: 
     var selectedOption by remember { mutableStateOf("") }
 
     ComposeBlindHMIRadioGroup(
-        modifier = Modifier.size(144.dp),
+        modifier = Modifier
+            .size(144.dp)
+            .disabled(disabled)
+            .gesturesDisabled(disabled),
         centerBackgroundRadius = 83.dp,
         centerBackgroundRes = R.drawable.ic_fragrance_button_center_bg,
         layoutRadius = 36.dp,
@@ -144,8 +160,9 @@ private fun createItems(context: Context): List<Item> {
     return itemsList
 }
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Preview
 @Composable
 fun FragranceButtonPreview() {
-    FragranceButton(FragranceOptions.SECRET) {}
+    FragranceButton(false, FragranceOptions.SECRET) {}
 }
