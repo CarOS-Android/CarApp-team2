@@ -37,7 +37,7 @@ private const val WHOLE_ANGLE = 360f
 @Composable
 fun FragranceController(
     modifier: Modifier = Modifier,
-    viewModel: FragranceViewModel = viewModel()
+    viewModel: FragranceViewModel
 ) {
     val driverState by viewModel.driverState.collectAsState()
     val copilotState by viewModel.copilotState.collectAsState()
@@ -127,9 +127,9 @@ private fun FragranceButton(currentSelection: FragranceOptions, onItemSelected: 
 
 private fun createItems(context: Context): List<Item> {
     val itemsList = mutableListOf<Item>()
-    val angleEachItem = WHOLE_ANGLE / FragranceOptions.values().size
+    val angleEachItem = WHOLE_ANGLE / FragranceOptions.optionList.size
     val startAngle = angleEachItem / 2
-    FragranceOptions.values().forEachIndexed { index, fragrance ->
+    FragranceOptions.optionList.forEachIndexed { index, fragrance ->
         val item = item(context) {
             imageRes = fragrance.imgRes
             angle = startAngle + index * angleEachItem

@@ -26,22 +26,22 @@ import com.thoughtworks.blindhmi.ui.composable.indicator
 import com.thoughtworks.blindhmi.ui.composable.stepper.ComposeBlindHMILoopStepper
 import com.thoughtworks.blindhmi.ui.utils.DimensionUtils.px
 import com.thoughtworks.carapp.R
+import com.thoughtworks.carapp.domain.FanDirection
 import com.thoughtworks.carapp.presentation.theme.LightBlue
 
 @Composable
-fun FanMode(
-    modifier: Modifier = Modifier,
+fun FanDirectionMode(
     viewModel: FanViewModel = viewModel()
 ) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .padding(top = 390.dp, start = 420.dp)
             .size(width = 105.dp, height = 110.dp)
     ) {
         val fanDirection by viewModel.fanDirection.collectAsState()
-        FanButton(fanDirection) { viewModel.sendEvent(FanEvent.SetFanDirection(it)) }
+        FanDirectionButton(fanDirection) { viewModel.sendEvent(FanEvent.SetFanDirection(it)) }
         Text(
-            text = "$fanDirection",
+            text = fanDirection.text,
             color = Color.White,
             fontSize = 18.sp,
             modifier = Modifier
@@ -55,22 +55,20 @@ fun FanMode(
 }
 
 @Composable
-fun FanButton(
-    fanDirection: Int,
+private fun FanDirectionButton(
+    fanDirection: FanDirection,
     onSweep: (Int) -> Unit
 ) {
     val context = LocalContext.current
     ComposeBlindHMILoopStepper(
-        modifier = Modifier.size(
-            104.dp
-        ),
+        modifier = Modifier.size(104.dp),
         centerBackgroundRadius = 44.dp,
         centerBackgroundRes = R.drawable.fan_bg,
         border = {
             border(context) {
                 imageRes = R.drawable.fan_border
                 radius = 52.px
-                drawOrder = getDrawOrder()
+                drawOrder = getDrawOrder() - 2
             }
         },
         indicator = {
@@ -84,19 +82,17 @@ fun FanButton(
             center(context) {
                 contentFactory = {
                     Image(
-                        painter = painterResource(
-                            R.drawable.fan_icon
-                        ),
+                        painter = painterResource(R.drawable.fan_icon),
                         contentDescription = ""
                     )
                 }
-                drawOrder = getDrawOrder() + 2
+                drawOrder = getDrawOrder() + 1
             }
         },
         minValue = 1f,
         maxValue = 3f,
-        currentValue = fanDirection.toFloat(),
-        steps = 12,
+        currentValue = fanDirection.value.toFloat(),
+        steps = 2,
         stepValue = 1f,
         onSweepStep = { _, stepperValue ->
             onSweep(

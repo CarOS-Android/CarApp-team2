@@ -14,26 +14,30 @@ class FanDirectionUseCase @Inject constructor(
     private val vehiclePropertyManager: VehiclePropertyManager
 ) {
     fun setFanDirection(direction: Int) {
-        val value = when (direction) {
-            1 -> VehicleHvacFanDirection.FACE
-            2 -> VehicleHvacFanDirection.FLOOR
-            else -> VehicleHvacFanDirection.DEFROST
-        }
+        val faceDirection = FanDirection.values()[direction - 1]
+
         vehiclePropertyManager.setProperty(
-            VehiclePropertyIds.HVAC_FAN_DIRECTION, HvacAreas.ALL, value
+            propId = VehiclePropertyIds.HVAC_FAN_DIRECTION,
+            areaId = HvacAreas.ALL,
+            state = faceDirection.value
         )
     }
 
-    fun fanFlow(): Flow<Int> {
+    fun getFanDirectionFlow(): Flow<FanDirection> {
         return vehiclePropertyManager.getPropertyFlow(
             VehiclePropertyIds.HVAC_FAN_DIRECTION,
             CarPropertyManager.SENSOR_RATE_ONCHANGE,
-        ).filterNotNull().map { it.value as Int }.map { direction ->
-            when (direction) {
-                VehicleHvacFanDirection.FACE -> VehicleHvacFanDirection.FACE
-                VehicleHvacFanDirection.FLOOR -> VehicleHvacFanDirection.FLOOR
-                else -> VehicleHvacFanDirection.DEFROST - 1
+        )
+            .filterNotNull()
+            .map { it.value as Int }
+            .map { direction ->
+                FanDirection.values().find { it.value == direction } ?: FanDirection.FACE
             }
-        }
     }
+}
+
+enum class FanDirection(val text: String, val value: Int) {
+    FACE("面部", VehicleHvacFanDirection.FACE),
+    FLOOR("脚部", VehicleHvacFanDirection.FLOOR),
+    DEFROST("除霜", VehicleHvacFanDirection.DEFROST);
 }
