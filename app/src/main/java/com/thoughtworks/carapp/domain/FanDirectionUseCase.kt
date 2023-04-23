@@ -4,7 +4,7 @@ import android.car.VehicleHvacFanDirection
 import android.car.VehiclePropertyIds
 import android.car.hardware.property.CarPropertyManager
 import com.thoughtworks.carapp.device.VehiclePropertyManager
-import com.thoughtworks.carapp.domain.hvac.HvacAreas
+import com.thoughtworks.carapp.domain.model.HvacAreas
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map

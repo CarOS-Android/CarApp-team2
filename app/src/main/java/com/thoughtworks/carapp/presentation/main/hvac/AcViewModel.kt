@@ -1,8 +1,8 @@
 package com.thoughtworks.carapp.presentation.main.hvac
 
 import com.thoughtworks.carapp.domain.hvac.AcTemperatureUseCase
-import com.thoughtworks.carapp.domain.hvac.FanSpeed
 import com.thoughtworks.carapp.domain.hvac.HvacFanUseCase
+import com.thoughtworks.carapp.domain.model.FanSpeed
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
 import dagger.hilt.android.lifecycle.HiltViewModel

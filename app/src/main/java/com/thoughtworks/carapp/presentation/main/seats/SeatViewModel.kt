@@ -1,28 +1,40 @@
 package com.thoughtworks.carapp.presentation.main.seats
 
-import com.thoughtworks.carapp.domain.seats.GetSeatHeatingStatusUseCase
-import com.thoughtworks.carapp.domain.seats.SetSeatHeatingStatusUseCase
+import com.thoughtworks.carapp.domain.model.SeatArea
+import com.thoughtworks.carapp.domain.seats.SeatStatusUseCase
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 sealed interface SeatEvent : Event {
-    object SwitchSeatHeatingEvent : SeatEvent
+    object SwitchDriverSeatHeatingEvent : SeatEvent
+    object SwitchCopilotSeatHeatingEvent : SeatEvent
 }
 
 @HiltViewModel
 class SeatViewModel @Inject constructor(
-    getSeatHeatingStatus: GetSeatHeatingStatusUseCase,
-    private val setSeatHeatingStatus: SetSeatHeatingStatusUseCase
+    private val seatStatusUseCase: SeatStatusUseCase
 ) : BaseViewModel<SeatEvent>() {
-    val isSeatHeatingOpened = getSeatHeatingStatus().stateWith(0)
+    val driverSeatHeatStatus = seatStatusUseCase
+        .getSeatHeatStatusFlow(SeatArea.DRIVER_AREA)
+        .stateWith(0)
+    val copilotSeatHeatStatus = seatStatusUseCase
+        .getSeatHeatStatusFlow(SeatArea.COPILOT_AREA)
+        .stateWith(0)
 
     override fun handleEvents(event: SeatEvent) {
         when (event) {
-            SeatEvent.SwitchSeatHeatingEvent -> {
-                setSeatHeatingStatus(
-                    if (isSeatHeatingOpened.value == 2) 0 else isSeatHeatingOpened.value + 1
+            SeatEvent.SwitchDriverSeatHeatingEvent -> {
+                seatStatusUseCase.setSeatHeatStatus(
+                    SeatArea.DRIVER_AREA,
+                    if (driverSeatHeatStatus.value == 2) 0 else driverSeatHeatStatus.value + 1
+                )
+            }
+            SeatEvent.SwitchCopilotSeatHeatingEvent -> {
+                seatStatusUseCase.setSeatHeatStatus(
+                    SeatArea.COPILOT_AREA,
+                    if (copilotSeatHeatStatus.value == 2) 0 else copilotSeatHeatStatus.value + 1
                 )
             }
         }

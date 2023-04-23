@@ -19,7 +19,7 @@ import com.thoughtworks.blindhmi.ui.composable.center
 import com.thoughtworks.blindhmi.ui.composable.indicator
 import com.thoughtworks.blindhmi.ui.composable.stepper.ComposeBlindHMILoopStepper
 import com.thoughtworks.carapp.R
-import com.thoughtworks.carapp.domain.hvac.FanSpeed
+import com.thoughtworks.carapp.domain.model.FanSpeed
 
 @Composable
 fun SpeedControlButton(

@@ -1,10 +1,10 @@
 package com.thoughtworks.carapp.domain.fragrance
 
 import android.car.FragranceState
-import android.car.VehicleAreaSeat
 import android.car.VehiclePropertyIds
 import android.car.hardware.property.CarPropertyManager
 import com.thoughtworks.carapp.device.VehiclePropertyManager
+import com.thoughtworks.carapp.domain.model.SeatArea
 import com.thoughtworks.carapp.presentation.carsetting.fragrance.FragranceOptions
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,15 +25,15 @@ class FragranceUseCase @Inject constructor(
     val fragranceOpenState: StateFlow<Boolean> = _fragranceOpenState.asStateFlow()
 
     fun getDriverAreaStatus(): Flow<FragranceOptions> {
-        return getAreaFragranceStatus(DRIVER_AREA)
+        return getAreaFragranceStatus(SeatArea.DRIVER_AREA)
     }
 
     fun getCopilotAreaStatus(): Flow<FragranceOptions> {
-        return getAreaFragranceStatus(COPILOT_AREA)
+        return getAreaFragranceStatus(SeatArea.COPILOT_AREA)
     }
 
     fun getBackSeatAreaStatus(): Flow<FragranceOptions> {
-        return getAreaFragranceStatus(BACK_SEAT_AREA)
+        return getAreaFragranceStatus(SeatArea.BACK_SEAT_AREA)
     }
 
     fun setWholeAreaOpenStatus(isOpen: Boolean) {
@@ -61,15 +61,15 @@ class FragranceUseCase @Inject constructor(
     }
 
     fun setDriverStatus(option: FragranceOptions) {
-        setFragranceStatus(option, DRIVER_AREA)
+        setFragranceStatus(option, SeatArea.DRIVER_AREA)
     }
 
     fun setCopilotStatus(option: FragranceOptions) {
-        setFragranceStatus(option, COPILOT_AREA)
+        setFragranceStatus(option, SeatArea.COPILOT_AREA)
     }
 
     fun setBackSeatStatus(option: FragranceOptions) {
-        setFragranceStatus(option, BACK_SEAT_AREA)
+        setFragranceStatus(option, SeatArea.BACK_SEAT_AREA)
     }
 
     private fun setFragranceStatus(
@@ -83,11 +83,5 @@ class FragranceUseCase @Inject constructor(
             FragranceOptions.SUNSHINE -> FragranceState.SUNSHINE
         }
         vehiclePropertyManager.setProperty(VehiclePropertyIds.HVAC_FRAGRANCE, areaId, value)
-    }
-
-    companion object {
-        private const val DRIVER_AREA = VehicleAreaSeat.SEAT_ROW_1_LEFT
-        private const val COPILOT_AREA = VehicleAreaSeat.SEAT_ROW_1_RIGHT
-        private const val BACK_SEAT_AREA = VehicleAreaSeat.SEAT_ROW_2_CENTER
     }
 }

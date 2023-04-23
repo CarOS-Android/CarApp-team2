@@ -1,4 +1,4 @@
-package com.thoughtworks.carapp.domain.hvac
+package com.thoughtworks.carapp.domain.model
 
 private const val SPEED_VALUE_OFF = 1
 private const val SPEED_VALUE_1 = 2

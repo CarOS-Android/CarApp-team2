@@ -2,7 +2,6 @@ package com.thoughtworks.carapp.presentation.main.seats
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,31 +23,40 @@ import com.thoughtworks.carapp.R
 
 @Composable
 fun SeatController(viewModel: SeatViewModel = viewModel()) {
-    val isSeatHeatingOpened by viewModel.isSeatHeatingOpened.collectAsState()
+    val driverHeatStatus by viewModel.driverSeatHeatStatus.collectAsState()
+    val copilotHeatStatus by viewModel.copilotSeatHeatStatus.collectAsState()
 
-    Box(
+    Row(modifier = Modifier.padding(start = 73.dp, top = 709.dp)) {
+        val driverTitle = "主驾"
+        val copilotTitle = "副驾"
+        SeatPanel(driverTitle, driverHeatStatus) {
+            viewModel.sendEvent(SeatEvent.SwitchDriverSeatHeatingEvent)
+        }
+        Spacer(modifier = Modifier.width(40.dp))
+        SeatPanel(copilotTitle, copilotHeatStatus) {
+            viewModel.sendEvent(SeatEvent.SwitchCopilotSeatHeatingEvent)
+        }
+    }
+}
+
+@Composable
+private fun SeatPanel(driverTitle: String, driverHeatStatus: Int, onDriverSwitch: () -> Unit) {
+    Row(
         modifier = Modifier
-            .padding(start = 73.dp, top = 709.dp)
+            .size(width = 605.dp, height = 283.dp)
             .background(color = Color.DarkGray)
-            .size(width = 605.dp, height = 283.dp),
-        contentAlignment = Alignment.CenterStart
     ) {
-        Row(
-            modifier = Modifier.padding(start = 44.5.dp, top = 32.dp),
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier.padding(start = 44.dp, top = 60.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Image(painter = painterResource(id = R.drawable.ic_seat_img), contentDescription = null)
-                Text(text = "主驾", color = Color.White, fontSize = 28.sp)
-            }
+            Image(painter = painterResource(id = R.drawable.ic_seat_img), contentDescription = null)
+            Text(text = driverTitle, color = Color.White, fontSize = 28.sp)
+        }
+        Spacer(modifier = Modifier.width(54.dp))
 
-            Spacer(modifier = Modifier.width(58.44.dp))
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                SeatHeatingButton(isSeatHeatingOpened) {
-                    viewModel.sendEvent(SeatEvent.SwitchSeatHeatingEvent)
-                }
-            }
+        Row(modifier = Modifier.padding(top = 32.dp)) {
+            SeatHeatingButton(driverHeatStatus, onDriverSwitch)
         }
     }
 }

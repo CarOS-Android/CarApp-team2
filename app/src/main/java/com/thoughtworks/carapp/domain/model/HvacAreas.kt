@@ -1,4 +1,4 @@
-package com.thoughtworks.carapp.domain.hvac
+package com.thoughtworks.carapp.domain.model
 
 import android.car.VehicleAreaMirror
 import android.car.VehicleAreaSeat
