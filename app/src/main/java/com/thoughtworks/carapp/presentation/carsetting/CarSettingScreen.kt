@@ -38,7 +38,7 @@ fun CarSettingScreen() {
         HvacOptionsMenu()
         SeatController()
         FanDirectionMode()
-        if (isFragranceOn) FragranceController(Modifier.align(Alignment.TopEnd), fragranceViewModel)
+        FragranceController(Modifier.align(Alignment.TopEnd), fragranceViewModel)
     }
 }
 
