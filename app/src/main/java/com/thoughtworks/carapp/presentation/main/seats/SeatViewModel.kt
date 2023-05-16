@@ -2,6 +2,7 @@ package com.thoughtworks.carapp.presentation.main.seats
 
 import com.thoughtworks.carapp.domain.model.SeatArea
 import com.thoughtworks.carapp.domain.model.SeatFuncGear
+import com.thoughtworks.carapp.domain.seats.SeatBeltStatusUseCase
 import com.thoughtworks.carapp.domain.seats.SeatStatusUseCase
 import com.thoughtworks.carapp.presentation.base.BaseViewModel
 import com.thoughtworks.carapp.presentation.base.Event
@@ -13,11 +14,13 @@ sealed interface SeatEvent : Event {
     object SwitchCopilotSeatHeatingEvent : SeatEvent
     object SwitchDriverVentilationEvent : SeatEvent
     object SwitchCopilotVentilationEvent : SeatEvent
+    object WearDriverSeatBeltEvent : SeatEvent
 }
 
 @HiltViewModel
 class SeatViewModel @Inject constructor(
-    private val seatStatusUseCase: SeatStatusUseCase
+    private val seatStatusUseCase: SeatStatusUseCase,
+    private val seatBeltStatusUseCase: SeatBeltStatusUseCase,
 ) : BaseViewModel<SeatEvent>() {
     val driverSeatHeatStatus = seatStatusUseCase
         .getSeatHeatStatusFlow(SeatArea.DRIVER_AREA)
@@ -31,6 +34,9 @@ class SeatViewModel @Inject constructor(
     val copilotSeatVentilationStatus = seatStatusUseCase
         .getSeatVentilationStatusFlow(SeatArea.COPILOT_AREA)
         .stateWith(SeatFuncGear.GEAR_OFF)
+    val driverSeatBeltStatus = seatBeltStatusUseCase
+        .driverSeatBeltStatusFlow()
+        .stateWith(seatBeltStatusUseCase.getCurrentDriverSeatBeltStatus())
 
     override fun handleEvents(event: SeatEvent) {
         when (event) {
@@ -56,6 +62,12 @@ class SeatViewModel @Inject constructor(
                 seatStatusUseCase.setSeatVentilationStatus(
                     SeatArea.COPILOT_AREA,
                     copilotSeatVentilationStatus.value.getNextGear()
+                )
+            }
+            SeatEvent.WearDriverSeatBeltEvent -> {
+                seatBeltStatusUseCase.setSeatBeltStatus(
+                    SeatArea.DRIVER_AREA,
+                    true // todo
                 )
             }
         }

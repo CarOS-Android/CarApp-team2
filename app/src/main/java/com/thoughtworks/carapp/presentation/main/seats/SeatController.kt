@@ -31,6 +31,7 @@ fun SeatController(viewModel: SeatViewModel = viewModel()) {
     val copilotHeatStatus by viewModel.copilotSeatHeatStatus.collectAsState()
     val driverVentilationStatus by viewModel.driverSeatVentilationStatus.collectAsState()
     val copilotVentilationStatus by viewModel.copilotSeatVentilationStatus.collectAsState()
+    val driverSeatBeltStatus by viewModel.driverSeatBeltStatus.collectAsState()
 
     Row(modifier = Modifier.padding(start = 73.dp, top = 709.dp)) {
         val driverTitle = "主驾"
@@ -39,16 +40,20 @@ fun SeatController(viewModel: SeatViewModel = viewModel()) {
             driverTitle = driverTitle,
             driverHeatStatus = driverHeatStatus,
             driverVentilationStatus = driverVentilationStatus,
+            driverSeatBeltStatus = driverSeatBeltStatus,
             onDriverHeatSwitch = { viewModel.sendEvent(SeatEvent.SwitchDriverSeatHeatingEvent) },
-            onDriverVentilationSwitch = { viewModel.sendEvent(SeatEvent.SwitchDriverVentilationEvent) }
+            onDriverVentilationSwitch = { viewModel.sendEvent(SeatEvent.SwitchDriverVentilationEvent) },
+            onDriverBeltWear = { viewModel.sendEvent(SeatEvent.WearDriverSeatBeltEvent) },
         )
         Spacer(modifier = Modifier.width(40.dp))
         SeatPanel(
             driverTitle = copilotTitle,
             driverHeatStatus = copilotHeatStatus,
             driverVentilationStatus = copilotVentilationStatus,
+            driverSeatBeltStatus = driverSeatBeltStatus,
             onDriverHeatSwitch = { viewModel.sendEvent(SeatEvent.SwitchCopilotSeatHeatingEvent) },
-            onDriverVentilationSwitch = { viewModel.sendEvent(SeatEvent.SwitchCopilotVentilationEvent) }
+            onDriverVentilationSwitch = { viewModel.sendEvent(SeatEvent.SwitchCopilotVentilationEvent) },
+            onDriverBeltWear = { viewModel.sendEvent(SeatEvent.WearDriverSeatBeltEvent) },
         )
     }
 }
@@ -58,8 +63,10 @@ private fun SeatPanel(
     driverTitle: String,
     driverHeatStatus: SeatFuncGear,
     driverVentilationStatus: SeatFuncGear,
+    driverSeatBeltStatus: Boolean,
     onDriverHeatSwitch: () -> Unit,
     onDriverVentilationSwitch: () -> Unit,
+    onDriverBeltWear: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -81,7 +88,7 @@ private fun SeatPanel(
             Spacer(modifier = Modifier.width(30.dp))
             SeatVentilationButton(driverVentilationStatus.value, onDriverVentilationSwitch)
             Spacer(modifier = Modifier.width(30.dp))
-            SeatBeltButton()
+            SeatBeltButton(driverSeatBeltStatus, onDriverBeltWear)
         }
     }
 }

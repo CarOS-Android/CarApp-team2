@@ -27,9 +27,16 @@ import com.thoughtworks.carapp.presentation.theme.DarkGray
 
 @Composable
 fun SeatBeltButton(
+    seatBeltStatus: Boolean,
     onSwitch: () -> Unit = {}
 ) {
-    val imgRes = R.drawable.ic_seat_img
+
+    val imgRes = if (seatBeltStatus) {
+        R.drawable.ic_seat_img
+    } else {
+        R.drawable.ic_seat_heating_on
+    }
+
     val text = "Seat Belt"
 
     Box(

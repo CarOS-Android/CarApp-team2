@@ -8,6 +8,7 @@
     <uses-permission android:name="android.car.permission.CONTROL_CAR_WINDOWS" />
     <uses-permission android:name="android.car.permission.CAR_EXTERIOR_LIGHTS" />
     <uses-permission android:name="android.car.permission.FRAGRANCE" />
+    <uses-permission android:name="android.car.permission.CONTROL_CAR_SEATS" />
 
     <application
         android:name=".MainApplication"
