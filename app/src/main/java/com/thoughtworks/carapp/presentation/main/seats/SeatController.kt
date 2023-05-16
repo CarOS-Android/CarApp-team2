@@ -80,6 +80,8 @@ private fun SeatPanel(
             SeatHeatingButton(driverHeatStatus.value, onDriverHeatSwitch)
             Spacer(modifier = Modifier.width(30.dp))
             SeatVentilationButton(driverVentilationStatus.value, onDriverVentilationSwitch)
+            Spacer(modifier = Modifier.width(30.dp))
+            SeatBeltButton()
         }
     }
 }
