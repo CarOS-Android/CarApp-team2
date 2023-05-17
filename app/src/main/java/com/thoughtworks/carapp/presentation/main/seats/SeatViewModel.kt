@@ -67,7 +67,7 @@ class SeatViewModel @Inject constructor(
             SeatEvent.WearDriverSeatBeltEvent -> {
                 seatBeltStatusUseCase.setSeatBeltStatus(
                     SeatArea.DRIVER_AREA,
-                    true // todo
+                    !driverSeatBeltStatus.value
                 )
             }
         }
